@@ -1,6 +1,6 @@
 {
-  "name": "crypto_capel",
-  "version": "0.1.0",
+  "name": "y",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
@@ -38,5 +38,17 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.3"
-  }
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "y",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nookons/crypto_capel_bot.git"
+  },
+  "author": "nookon",
+  "license": "SEE LICENSE IN <lin>",
+  "bugs": {
+    "url": "https://github.com/Nookons/crypto_capel_bot/issues"
+  },
+  "homepage": "https://github.com/Nookons/crypto_capel_bot#readme"
 }
