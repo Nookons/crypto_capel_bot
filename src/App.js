@@ -7,7 +7,7 @@ import {useTelegram} from "./Hooks/useTelegram";
 import {Route, Routes} from "react-router-dom";
 import Posts from "./Posts/Posts";
 
-import {doc, getDoc, setDoc} from "firebase/firestore";
+import {doc, getDoc, updateDoc, setDoc} from "firebase/firestore";
 import {db} from "./firebase";
 
 const App = () => {
@@ -20,18 +20,22 @@ const App = () => {
 
     useEffect(() => {
         async function setUser() {
-            if (user) {
+            try {
                 const docRef = doc(db, "users", user.id);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
-                    console.log("User data:", docSnap.data());
+                    await updateDoc(doc(db, "users", user?.id), {
+                        lastSignIn: Date.now(),
+                    });
                 } else {
-                    await setDoc(doc(db, "users", user.id), {
+                    await setDoc(doc(db, "users", user?.id), {
                         applicationId: Date.now(),
                         ...user
                     });
                 }
+            } catch (error) {
+                console.log(error);
             }
         }
 
