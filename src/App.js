@@ -9,6 +9,7 @@ import { useTelegram } from "./Hooks/useTelegram";
 import { db } from "./firebase";
 
 import './App.css';
+import dayjs from "dayjs";
 
 const App = () => {
     const { tg, user } = useTelegram();
@@ -34,7 +35,7 @@ const App = () => {
 
                     if (docSnap.exists()) {
                         await updateDoc(userDocRef, {
-                            lastSignIn: Date.now(),
+                            lastSignIn: dayjs().format("dddd, MMMM DD, YYYY [at] HH:mm"),
                         });
                         console.log('User document updated');
                     } else {
