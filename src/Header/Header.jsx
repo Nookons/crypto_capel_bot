@@ -12,11 +12,11 @@ const Header = () => {
         <div className={"Main"}>
             <div className={"Logo"}>
                 <img src={logo} alt="logotype"/>
-                <article>Crypto Capel</article>
+                <h4>Crypto Capel</h4>
             </div>
             <div className={"User_block"}>
-                <img src={userLogo} alt="logotype"/>
-                <img src={userSettings} alt="logotype"/>
+                <button disabled><img src={userLogo} alt="logotype"/></button>
+                <button disabled><img src={userSettings} alt="logotype"/></button>
             </div>
         </div>
     );

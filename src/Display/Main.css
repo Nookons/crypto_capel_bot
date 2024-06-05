@@ -7,21 +7,24 @@
 .Display > div {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    background: var(--tg-theme-bg-color) !important;
+    gap: 14px;
+    background: #e8e8e8;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(183,255,0,0.25);
     padding: 14px;
+}
+.Display > div > img {
+    max-width: 100%;
 }
 
 .Display > div > button {
-    background: var(--tg-theme-button-color) !important;
-    color: var(--tg-theme-button-text-color) !important;
+    background: #333;
+    color: white !important;
     width: 100%;
     padding: 10px 15px;
     border: none;
     outline: none;
-    font-weight: 600;
-    font-size: 16px;
+    font-weight: 400;
+    font-size: 14px;
+    border-radius: 4px;
 }
