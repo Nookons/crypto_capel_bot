@@ -21,18 +21,23 @@ const App = () => {
     useEffect(() => {
         async function setUser() {
             try {
-                const docRef = doc(db, "users", user.id);
-                const docSnap = await getDoc(docRef);
+                if (user) {
+                    console.log(user)
+                    console.log("user_" + user.id)
 
-                if (docSnap.exists()) {
-                    await updateDoc(doc(db, "users", "user_" + user.id), {
-                        lastSignIn: Date.now(),
-                    });
-                } else {
-                    await setDoc(doc(db, "users", "user_" + user.id), {
-                        applicationId: Date.now(),
-                        ...user
-                    });
+                    const docRef = doc(db, "users", user.id);
+                    const docSnap = await getDoc(docRef);
+
+                    if (docSnap.exists()) {
+                        await updateDoc(doc(db, "users", "user_" + user.id), {
+                            lastSignIn: Date.now(),
+                        });
+                    } else {
+                        await setDoc(doc(db, "users", "user_" + user.id), {
+                            applicationId: Date.now(),
+                            ...user
+                        });
+                    }
                 }
             } catch (error) {
                 console.log(error);
