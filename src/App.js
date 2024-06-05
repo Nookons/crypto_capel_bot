@@ -20,7 +20,6 @@ const App = () => {
             </div>
             <Main />
             <button
-                onClick={onClose}
                 className="close-button"
                 aria-label="Close App"
             >
