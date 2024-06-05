@@ -6,7 +6,7 @@ import './App.css'
 import {useTelegram} from "./Hooks/useTelegram";
 
 const App = () => {
-    const {tg, userName} = useTelegram();
+    const {tg, user} = useTelegram();
 
     useEffect(() => {
         tg.ready();
@@ -16,12 +16,12 @@ const App = () => {
     return (
         <div className={"container"}>
             <Header/>
-            {userName ?
+            {user ?
                 <h5 style={{
                     textAlign: "center",
                     padding: 14
                 }}>
-                    {userName}.tg
+                    Hello {user.firstName} {user.lastName} {user.username}.tg
                 </h5>
                 : null
             }
