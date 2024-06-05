@@ -1,23 +1,43 @@
 import React, {useEffect} from 'react';
 import './App.css'
-import MyButton from "./Button/MyButton";
+import './App.css'
+import Header from "./Header/Header";
+import Main from "./Display/Main";
 
-const tg = window.Telegram.WebApp;
+import copyIcon from './Assets/copy.svg'
+
+//const tg = window.Telegram.WebApp;
 
 const App = () => {
 
-    useEffect(() => {
+   /* useEffect(() => {
         tg.ready();
     }, []);
 
     const onClose = () => {
         tg.close();
-    }
+    }*/
 
     return (
-        <div>
-          <h5>App...</h5>
-            <MyButton onClick={onClose} >Close</MyButton>
+        <div className={"container"}>
+            <Header />
+            <div style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: 4,
+                alignItems: "center",
+                textAlign: "center",
+                padding: 14
+            }}>
+                <h5>nookon.tg</h5>
+                <button style={{
+                    border: "none",
+                    background: "none"
+                }}>
+                    <img style={{maxWidth: 20}} src={copyIcon} alt=""/>
+                </button>
+            </div>
+            <Main />
         </div>
     );
 };

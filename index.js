@@ -4,6 +4,7 @@ const token     = '7444141672:AAE1NAQiU1jbTGYacwTtJure0YAXp6fn95k';
 const webAppUrl = 'https://crypto-capel-bot.vercel.app/';
 const bot       = new TelegramBot(token, {polling: true});
 
+//nodemon index.js
 
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;

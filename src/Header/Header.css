@@ -1,0 +1,29 @@
+.Main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2vw;
+    box-shadow: 0 5px 5px rgba(0,0,0, 0.25);
+    padding: 14px;
+}
+.Logo {
+    display: flex;
+    gap: 2vw;
+    align-items: center;
+}
+
+.Logo > img {
+    max-width: 25px;
+}
+
+.User_block {
+    display: flex;
+    gap: 4px;
+}
+
+.User_block > img {
+    max-width: 25px;
+    background: #8d8d8d;
+    padding: 4px;
+    border-radius: 5px;
+}
