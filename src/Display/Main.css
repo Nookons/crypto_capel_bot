@@ -8,7 +8,7 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
-    background: var(--tg-theme-bg-color);
+    background: var(--tg-theme-bg-color) !important;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(183,255,0,0.25);
@@ -16,8 +16,8 @@
 }
 
 .Display > div > button {
-    background: var(--tg-theme-button-color);
-    color: var(--tg-theme-button-text-color);
+    background: var(--tg-theme-button-color) !important;
+    color: var(--tg-theme-button-text-color) !important;
     width: 100%;
     padding: 10px 15px;
     border: none;
