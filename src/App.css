@@ -7,7 +7,7 @@
 }
 
 h1,h2,h3,h4,h5,h6,p,span,article {
-  color: var(--tg-theme-text-color);
+  color: var(--tg-theme-text-color) !important;
   font-family: "Noto Sans JP", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
@@ -26,5 +26,5 @@ h5, h6, a, article { font-size: clamp(14px, .9vw, 21px) !important;}
 p { font-size: clamp(14px, .8vw, 21px) !important;}
 
 body {
-  background: var(--tg-theme-bg-color);
+  background: var(--tg-theme-bg-color) !important;
 }
