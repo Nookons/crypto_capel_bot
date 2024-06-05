@@ -6,18 +6,21 @@ import './App.css'
 import {useTelegram} from "./Hooks/useTelegram";
 
 const App = () => {
-    const { tg, user } = useTelegram();
-
-    console.log(user);
+    const {tg, userName} = useTelegram();
 
     return (
         <div className={"container"}>
-            <Header />
-            <h5 style={{
-                textAlign: "center",
-                padding: 14
-            }}>test</h5>
-            <Main />
+            <Header/>
+            {userName ?
+                <h5 style={{
+                    textAlign: "center",
+                    padding: 14
+                }}>
+                    {userName}.tg
+                </h5>
+                : null
+            }
+            <Main/>
         </div>
     );
 };

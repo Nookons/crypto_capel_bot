@@ -4,6 +4,6 @@ export function useTelegram() {
 
     return {
         tg,
-        user: tg?.initDataUnsafe?.user
+        userName: tg.initDataUnsafe?.user?.username
     }
 }
