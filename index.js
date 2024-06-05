@@ -1,7 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 
 const token     = '7444141672:AAE1NAQiU1jbTGYacwTtJure0YAXp6fn95k';
-const webAppUrl = 'https://www.google.ru/';
+const webAppUrl = 'https://crypto-capel-bot.vercel.app/';
 const bot       = new TelegramBot(token, {polling: true});
 
 
