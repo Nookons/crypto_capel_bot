@@ -27,7 +27,7 @@ const App = () => {
                 if (docSnap.exists()) {
                     console.log("User data:", docSnap.data());
                 } else {
-                    await setDoc(doc(db, "users_set", user.id), {
+                    await setDoc(doc(db, "users", user.id), {
                         applicationId: Date.now(),
                         ...user
                     });
