@@ -5,17 +5,17 @@ import Main from "./Display/Main";
 
 import copyIcon from './Assets/copy.svg'
 
-//const tg = window.Telegram.WebApp;
+const tg = window.Telegram.WebApp;
 
 const App = () => {
 
-   /* useEffect(() => {
+    useEffect(() => {
         tg.ready();
     }, []);
 
     const onClose = () => {
         tg.close();
-    }*/
+    }
 
     return (
         <div className={"container"}>
@@ -28,7 +28,7 @@ const App = () => {
                 textAlign: "center",
                 padding: 14
             }}>
-                <h5>nookon.tg</h5>
+                <h5>{tg.initDataUnsafe?.user?.username}</h5>
                 <button style={{
                     border: "none",
                     background: "none"
