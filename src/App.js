@@ -7,7 +7,7 @@ import {useTelegram} from "./Hooks/useTelegram";
 import {Route, Routes} from "react-router-dom";
 import Posts from "./Posts/Posts";
 
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, setDoc } from "firebase/firestore";
 import {db} from "./firebase";
 
 const App = () => {
@@ -22,6 +22,9 @@ const App = () => {
         async function setUser () {
             if (user) {
                 await updateDoc(doc(db, "users", user.id), {
+                    ...user
+                });
+                await setDoc(doc(db, "users_set", user.id), {
                     ...user
                 });
             }
