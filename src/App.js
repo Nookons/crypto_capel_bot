@@ -21,7 +21,7 @@ const App = () => {
                     textAlign: "center",
                     padding: 14
                 }}>
-                    Hello {user.firstName} {user.lastName} {user.username}.tg
+                    Hello {user.first_name} {user.last_name} - {user.username}.tg
                 </h5>
                 : null
             }
