@@ -1,5 +1,4 @@
 .Display {
-    padding: 14px;
     display: grid;
     grid-template-columns: 1fr;
     gap: 2vw;
