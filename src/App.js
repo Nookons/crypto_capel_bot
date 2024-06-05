@@ -14,7 +14,7 @@ const App = () => {
 
     return (
         <div>
-          App...
+          <h5>App...</h5>
             <button onClick={onClose} >Close</button>
         </div>
     );
