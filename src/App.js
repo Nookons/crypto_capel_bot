@@ -28,7 +28,7 @@ const App = () => {
                 textAlign: "center",
                 padding: 14
             }}>
-                <h5>{tg.initDataUnsafe?.user?.username}</h5>
+                <h5>test</h5>
                 <button style={{
                     border: "none",
                     background: "none"
