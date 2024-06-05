@@ -7,7 +7,7 @@ import {useTelegram} from "./Hooks/useTelegram";
 import {Route, Routes} from "react-router-dom";
 import Posts from "./Posts/Posts";
 
-import { doc, updateDoc, setDoc } from "firebase/firestore";
+import {doc, updateDoc, setDoc} from "firebase/firestore";
 import {db} from "./firebase";
 
 const App = () => {
@@ -19,7 +19,7 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        async function setUser () {
+        async function setUser() {
             if (user) {
                 await updateDoc(doc(db, "users", user.id), {
                     ...user
@@ -32,6 +32,17 @@ const App = () => {
 
         setUser();
     }, [user]);
+
+    useEffect(() => {
+        async function setUser() {
+            await setDoc(doc(db, "test_set", "asdasdad_0201"), {
+                name: 'test',
+                ...user
+            });
+        }
+
+        setUser();
+    }, []);
 
     return (
         <div className={"container"}>
@@ -46,8 +57,8 @@ const App = () => {
                 : null
             }
             <Routes>
-                <Route index element={<Main />}/>
-                <Route path={'posts'} element={<Posts />}/>
+                <Route index element={<Main/>}/>
+                <Route path={'posts'} element={<Posts/>}/>
             </Routes>
         </div>
     );
