@@ -5,7 +5,7 @@
 }
 
 h1,h2,h3,h4,h5,h6,p,span,article {
-  color: var(--tg-theme-button-text-color);
+  color: var(--tg-theme-text-color);
 }
 
 body {
