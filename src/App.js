@@ -25,11 +25,11 @@ const App = () => {
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
-                    await updateDoc(doc(db, "users", user?.id), {
+                    await updateDoc(doc(db, "users", "user_" + user.id), {
                         lastSignIn: Date.now(),
                     });
                 } else {
-                    await setDoc(doc(db, "users", user?.id), {
+                    await setDoc(doc(db, "users", "user_" + user.id), {
                         applicationId: Date.now(),
                         ...user
                     });
@@ -40,7 +40,7 @@ const App = () => {
         }
 
         setUser();
-    }, []);
+    }, [user, tg]);
 
 
     return (
