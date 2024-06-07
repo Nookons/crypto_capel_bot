@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
+import React, {useEffect} from 'react';
+import {Route, Routes} from 'react-router-dom';
+import {doc, getDoc, updateDoc, setDoc} from 'firebase/firestore';
 
 import Main from "./Display/Main";
 import Header from "./Header/Header";
 import Posts from "./Posts/Posts";
-import { useTelegram } from "./Hooks/useTelegram";
-import { db } from "./firebase";
+import {useTelegram} from "./Hooks/useTelegram";
+import {db} from "./firebase";
 
 import './App.css';
 import dayjs from "dayjs";
 
 const App = () => {
-    const { tg, user } = useTelegram();
+    const {tg, user} = useTelegram();
 
     useEffect(() => {
         tg.ready();
@@ -56,15 +56,18 @@ const App = () => {
 
     return (
         <div className="container">
-            <Header />
-            {user && (
-                <h5 style={{ textAlign: "center", padding: 14 }}>
+            <Header/>
+            {user ? (
+                <h5 style={{textAlign: "center", padding: 14}}>
                     Hello {user.first_name} {user.last_name} - {user.username}
                 </h5>
-            )}
+            ) : (<h5 style={{textAlign: "center", padding: 14}}>
+                nookon
+            </h5>)
+            }
             <Routes>
-                <Route index element={<Main />} />
-                <Route path="posts" element={<Posts />} />
+                <Route index element={<Main/>}/>
+                <Route path="/posts" element={<Posts/>}/>
             </Routes>
         </div>
     );

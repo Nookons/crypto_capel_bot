@@ -1,28 +1,58 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './Main.css'
+import {collection, query, where, onSnapshot} from "firebase/firestore";
+import {db} from "../firebase";
+import {Link, useNavigate} from "react-router-dom";
+import {POST_PAGE_ROUTE} from "../utils/Routes";
+
 
 const Main = () => {
+    const [projectsData, setProjectsData] = useState([]);
+
+    useEffect(() => {
+        const path = query(collection(db, "projects"));
+
+        const unsubscribe = onSnapshot(path, (querySnapshot) => {
+            const projects = [];
+            querySnapshot.forEach((doc) => {
+                projects.push(doc.data());
+            });
+            setProjectsData(projects);
+        });
+    }, []);
+
+    const onProjectClick = (link) => {
+        window.location.href = link;
+    }
+
+    if (!projectsData.length) {
+        return (
+            <div className={"snackbar"}>
+
+            </div>
+        )
+    }
+
     return (
-        <div className={"Display"}>
-            <div>
-                <img src="https://crypto-stonks.com/wp-content/uploads/2024/05/blum-1024x576.jpg" alt=""/>
-                <h3>Bloom</h3>
-                <p>Децентралізований обмін всередині Telegram за допомогою міні-додатку</p>
-                <button>Розпочати гру</button>
+        <div>
+            <div style={{
+                margin: "14px 0",
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 4
+            }}>
+                <button style={{padding: "2px 18px"}}><Link to={POST_PAGE_ROUTE}><article>POST</article></Link></button>
+                <button style={{padding: "2px 18px"}}><Link to={POST_PAGE_ROUTE}><article>MINE</article></Link></button>
             </div>
+            <div className={"Display"}>
+                {projectsData.map((el, index) => {
 
-            <div>
-                <img src="https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_66432956d91ca37bce56369b_664329d97e0c9b54987eac34/scale_1200" alt=""/>
-                <h3>WormFare</h3>
-                <p>Це криптогра з реальним впливом! Наші черв'ячки не просто говорять - вони діють!</p>
-                <button>Розпочати гру</button>
-            </div>
-
-            <div>
-                <img src="https://cryptorussia.ru/wp-content/uploads/2024/06/tronix.jpg" alt=""/>
-                <h3>TRONIX APP</h3>
-                <p>Це інноваційна гра в Telegram, яка дозволяє користувачам заробляти криптовалюту, виконуючи різні завдання та брати участь в міні-іграх.</p>
-                <button>Розпочати гру</button>
+                    return (
+                        <div onClick={() => onProjectClick(el.link)}  key={index}>
+                            <img alt={el.name} src={el.imgPath}/>
+                        </div>
+                    )
+                })}
             </div>
         </div>
     );
