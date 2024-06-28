@@ -10,6 +10,7 @@ import {db} from "./firebase";
 
 import './App.css';
 import dayjs from "dayjs";
+import Footer from "./Footer/Footer";
 
 const App = () => {
     const {tg, user} = useTelegram();
@@ -57,18 +58,19 @@ const App = () => {
     return (
         <div className="container">
             <Header/>
-            {user ? (
+            {/*{user ? (
                 <h5 style={{textAlign: "center", padding: 14}}>
                     Hello {user.first_name} {user.last_name} - {user.username}
                 </h5>
             ) : (<h5 style={{textAlign: "center", padding: 14}}>
                 nookon
             </h5>)
-            }
+            }*/}
             <Routes>
                 <Route index element={<Main/>}/>
                 <Route path="/posts" element={<Posts/>}/>
             </Routes>
+            <Footer />
         </div>
     );
 };

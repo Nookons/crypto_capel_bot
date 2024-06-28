@@ -4,6 +4,17 @@ import {collection, query, where, onSnapshot} from "firebase/firestore";
 import {Link, useNavigate} from "react-router-dom";
 import {POST_PAGE_ROUTE} from "../utils/Routes";
 import {db} from "../firebase";
+import {
+    Avatar,
+    Button, Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    ToggleButton,
+    ToggleButtonGroup
+} from "@mui/material";
+import {FormatAlignCenter, FormatAlignJustify, FormatAlignLeft, FormatAlignRight} from "@mui/icons-material";
 
 
 const Main = () => {
@@ -14,6 +25,21 @@ const Main = () => {
         isOpen: false,
         id: 0,
     });
+
+    const [alignment, setAlignment] = React.useState('web');
+
+    const [open, setOpen] = React.useState(true);
+
+    const handleClickOpen = (id) => {
+        setIsDialog({isOpen: true, id: id});
+    };
+    const handleClose = () => {
+        setIsDialog(prevState => ({...prevState, isOpen: false}));
+    };
+
+    const handleChange = (event, newAlignment) => {
+        setAlignment(newAlignment);
+    };
 
     useEffect(() => {
         if (isDialog.id) {
@@ -46,9 +72,6 @@ const Main = () => {
         )
     }
 
-
-
-
     return (
         <div>
             <div style={{
@@ -57,26 +80,51 @@ const Main = () => {
                 flexWrap: "wrap",
                 gap: 4
             }}>
-                <button className={"Buttons"}> <Link to={POST_PAGE_ROUTE}><article>POST</article></Link></button>
-                <button className={"Buttons"}> <Link to={POST_PAGE_ROUTE}><article>MINE</article></Link></button>
+                <ToggleButtonGroup
+                    color="primary"
+                    value={alignment}
+                    exclusive
+                    onChange={handleChange}
+                    aria-label="Platform"
+                    size={"small"}>
+
+                    <ToggleButton value="web"><p>Launch</p></ToggleButton>
+                    <ToggleButton value="android"><p>Favorite</p></ToggleButton>
+                    <ToggleButton value="ios"><p>News</p></ToggleButton>
+                </ToggleButtonGroup>
             </div>
             {isDialog.isOpen &&
-                <div onClick={() => setIsDialog((prevState) => ({...prevState, isOpen: false, id: 0}))} className={"Dialog"}>
-                    <div onClick={(el) => el.stopPropagation()}>
-                        <img style={{maxWidth: "100%"}} alt={dialogItem?.name} src={dialogItem?.imgPath}/>
-                        <h4>{dialogItem?.name}</h4>
-                        <p>{dialogItem?.description}</p>
-                        <div style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 4,
-                            marginTop: 14
-                        }}>
-                            <button onClick={() => onProjectClick(dialogItem.link)} className={"Buttons"}> <article>Launch</article></button>
-                            <button className={"Buttons"}> <article>Add to favorite</article></button>
-                        </div>
-                    </div>
-                </div>
+                <Dialog
+                    open={true}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 2
+                    }} id="alert-dialog-title">
+                        <Avatar sx={{
+                            width: 75,
+                            height: 75
+                        }} src={dialogItem?.imgPath}>N</Avatar>
+                        <h3>{dialogItem?.name}</h3>
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            <p>{dialogItem?.description}</p>
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button>More</Button>
+                        <Button onClick={() => onProjectClick(dialogItem.link)} variant="contained" sx={{my: 2}}>
+                            Launch
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
+
             }
             <div className={"Display"}>
                 {projectsData.map((el, index) => {
@@ -86,7 +134,7 @@ const Main = () => {
                             style={{
                                 background: `url(${el.imgPath})`
                             }}
-                            onClick={() => setIsDialog((prevState) => ({...prevState, isOpen: true, id: el.id}))}
+                            onClick={() => handleClickOpen(el.id)}
                             key={index}
                         >
                             {/*<img alt={el.name} src={el.imgPath}/>*/}

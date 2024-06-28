@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 2vw;
-    padding: 14px;
+    padding: 14px 0;
 }
 .Logo {
     display: flex;
@@ -27,9 +27,11 @@
     padding: 4px 4px;
 }
 
-.User_block > button > img {
-    max-width: 25px;
-    background: #e8e8e8;
+.User_block > button > svg {
+    width: 50px;
+    height: 30px;
+    background: #101010;
+    color: white;
     padding: 4px;
     border-radius: 5px;
 }

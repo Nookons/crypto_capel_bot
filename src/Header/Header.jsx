@@ -5,6 +5,9 @@ import logo from '../Assets/logo.svg'
 import userLogo from '../Assets/user.svg'
 import userSettings from '../Assets/settings.svg'
 
+import SettingsIcon from '@mui/icons-material/Settings';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 const Header = () => {
 
 
@@ -15,8 +18,8 @@ const Header = () => {
                 <h4>Crypto Capel</h4>
             </div>
             <div className={"User_block"}>
-                <button  disabled><img src={userLogo} alt="logotype"/></button>
-                <button  disabled><img src={userSettings} alt="logotype"/></button>
+                <button  disabled><SettingsIcon /></button>
+                <button  disabled><AccountCircleIcon /></button>
             </div>
         </div>
     );
