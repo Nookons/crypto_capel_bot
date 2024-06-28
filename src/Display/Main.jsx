@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import './Main.css'
 import {collection, query, where, onSnapshot} from "firebase/firestore";
-import {db} from "../firebase";
 import {Link, useNavigate} from "react-router-dom";
 import {POST_PAGE_ROUTE} from "../utils/Routes";
+import {db} from "../firebase";
 
 
 const Main = () => {
@@ -82,8 +82,14 @@ const Main = () => {
                 {projectsData.map((el, index) => {
 
                     return (
-                        <div onClick={() => setIsDialog((prevState) => ({...prevState, isOpen: true, id: el.id}))}  key={index}>
-                            <img alt={el.name} src={el.imgPath}/>
+                        <div
+                            style={{
+                                background: `url(${el.imgPath})`
+                            }}
+                            onClick={() => setIsDialog((prevState) => ({...prevState, isOpen: true, id: el.id}))}
+                            key={index}
+                        >
+                            {/*<img alt={el.name} src={el.imgPath}/>*/}
                         </div>
                     )
                 })}
