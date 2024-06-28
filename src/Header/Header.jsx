@@ -15,8 +15,8 @@ const Header = () => {
                 <h4>Crypto Capel</h4>
             </div>
             <div className={"User_block"}>
-                <button disabled><img src={userLogo} alt="logotype"/></button>
-                <button disabled><img src={userSettings} alt="logotype"/></button>
+                <button  disabled><img src={userLogo} alt="logotype"/></button>
+                <button  disabled><img src={userSettings} alt="logotype"/></button>
             </div>
         </div>
     );

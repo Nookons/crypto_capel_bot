@@ -25,6 +25,22 @@ h4 { font-size: clamp(16px, 4vw, 24px) !important;}
 h5, h6, a, article { font-size: clamp(14px, .9vw, 21px) !important;}
 p { font-size: clamp(14px, .8vw, 21px) !important;}
 
+button {
+  background-color: black;
+  outline: none;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 4px;
+}
+
+button > a{
+  text-decoration: none;
+}
+button article{
+  color: white;
+}
+
+
 body {
   background: white;
 }
