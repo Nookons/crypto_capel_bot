@@ -23,7 +23,7 @@ h2 { font-size: clamp(20px, 5vw, 30px) !important;}
 h3 { font-size: clamp(18px, 4.5vw, 27px) !important;}
 h4 { font-size: clamp(16px, 4vw, 24px) !important;}
 h5, h6, a, article { font-size: clamp(14px, .9vw, 21px) !important;}
-p { font-size: clamp(14px, .8vw, 21px) !important;}
+p { font-size: clamp(12px, .8vw, 21px) !important;}
 
 
 

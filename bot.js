@@ -58,7 +58,7 @@ bot.on('message', async (msg) => {
                 case 'awaiting_project_link':
                     userState.project.link = text;
                     userState.state = 'awaiting_project_photo';
-                    await bot.sendMessage(chatId, `Описание проекта сохранено. Теперь отправь мне фото проекта...`);
+                    await bot.sendMessage(chatId, `Реферальна ссылка проекта сохранена. Теперь отправь мне фото проекта...`);
                     break;
 
                 case 'awaiting_project_photo':

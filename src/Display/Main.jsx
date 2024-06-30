@@ -5,16 +5,22 @@ import {Link, useNavigate} from "react-router-dom";
 import {POST_PAGE_ROUTE} from "../utils/Routes";
 import {db} from "../firebase";
 import {
-    Avatar,
-    Button, Dialog,
+    Avatar, Box,
+    Button, ButtonGroup, Chip, Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle,
+    DialogTitle, Divider, Drawer, FormControlLabel, FormGroup, Rating, Stack, Switch,
     ToggleButton,
-    ToggleButtonGroup
+    ToggleButtonGroup, Typography
 } from "@mui/material";
 import {FormatAlignCenter, FormatAlignJustify, FormatAlignLeft, FormatAlignRight} from "@mui/icons-material";
+
+import FavoriteIcon from '@mui/icons-material/Favorite';
+
+import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 
 
 const Main = () => {
@@ -28,13 +34,18 @@ const Main = () => {
 
     const [alignment, setAlignment] = React.useState('web');
 
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = (id) => {
         setIsDialog({isOpen: true, id: id});
     };
     const handleClose = () => {
         setIsDialog(prevState => ({...prevState, isOpen: false}));
+    };
+
+    const toggleDrawer = (newOpen) => () => {
+        setOpen(newOpen);
+        handleClose();
     };
 
     const handleChange = (event, newAlignment) => {
@@ -62,6 +73,7 @@ const Main = () => {
 
     const onProjectClick = (link) => {
         window.location.href = link;
+        toggleDrawer(false);
     }
 
     if (!projectsData.length) {
@@ -72,8 +84,43 @@ const Main = () => {
         )
     }
 
+    const DrawerList = (
+        <Box sx={{ width: "100%", p: 1, height: "100dvh"}} role="presentation" onClick={toggleDrawer(false)}>
+            <Avatar sx={{width: "100%", height: 158}} variant={"rounded"} src={dialogItem?.imgPath}>N</Avatar>
+            <Stack
+                my={1}
+                direction="row"
+                divider={<Divider orientation="vertical" flexItem/>}
+                spacing={2}
+                sx={{alignItems: "center"}}
+            >
+                <h4>{dialogItem?.name}</h4>
+                <Box style={{display: "flex", gap: 4}}><FavoriteIcon fontSize={"small"}/> <p>{dialogItem?.likes.toLocaleString()}</p></Box>
+                <Rating value={4} readOnly name="simple-controlled"/>
+            </Stack>
+            <br/>
+            <p>{dialogItem?.description}</p>
+            <ButtonGroup
+                variant={"outlined"}
+                aria-label="outlined primary button group"
+                size={"small"} color={"secondary"} sx={{my: 2}}>
+
+                <Button><BookmarkAddIcon /></Button>
+                <Button><ThumbUpIcon /></Button>
+                <Button><ThumbDownIcon /></Button>
+            </ButtonGroup>
+            <Typography sx={{position: "fixed", bottom: 0, left: 0, right: 0, p: 1}} variant="caption" display="block" gutterBottom>
+                <p style={{color: "gray"}}>Created: {dialogItem?.createdTime}</p>
+                <p style={{color: "gray"}}>Updated: {dialogItem?.updatedTime}</p>
+            </Typography>
+        </Box>
+    );
+
     return (
         <div>
+            <Drawer sx={{width: "100%"}} open={open} onClose={toggleDrawer(false)}>
+                {DrawerList}
+            </Drawer>
             <div style={{
                 margin: "14px 0",
                 display: "flex",
@@ -113,11 +160,22 @@ const Main = () => {
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
+                            <div style={{
+                                display: "flex",
+                                gap: 8,
+                                flexWrap: "wrap"
+                            }}>
+                                <Chip label="Coin" variant="outlined" size={"small"}/>
+                                <Chip label="Solana" variant="outlined" size={"small"}/>
+                            </div>
+                            <br/>
                             <p>{dialogItem?.description}</p>
+                            <br/>
+                            <p>{dialogItem?.updatedTime}</p>
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button>More</Button>
+                        <Button onClick={toggleDrawer(true)}>More</Button>
                         <Button onClick={() => onProjectClick(dialogItem.link)} variant="contained" sx={{my: 2}}>
                             Launch
                         </Button>
