@@ -142,7 +142,7 @@ const Main = () => {
             </div>
             {isDialog.isOpen &&
                 <Dialog
-                    open={true}
+                    open={isDialog.isOpen}
                     onClose={handleClose}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
