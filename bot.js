@@ -1,6 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api');
 const dayjs = require("dayjs");
-const { setDoc, doc } = require("firebase/firestore");
+const { setDoc, doc,  collection, query, where, getDocs} = require("firebase/firestore");
 const db = require("./firebase");
 
 const token = '7444141672:AAE1NAQiU1jbTGYacwTtJure0YAXp6fn95k';
@@ -39,6 +39,27 @@ bot.on('message', async (msg) => {
         case "/add_project":
             userState.state = 'awaiting_project_name';
             await bot.sendMessage(chatId, `Давай начнём с названия проекта...`);
+            break;
+
+        case "/edit_project":
+            // Clear the projects array to avoid duplicates
+            const projects = [];
+
+            const q = query(collection(db, "projects"));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                projects.push({ name: data.name, link: data.link, id: data.id });
+            });
+
+            await bot.sendMessage(chatId, `Please pick a project!`, {
+                parse_mode: 'HTML',
+                reply_markup: {
+                    inline_keyboard: projects.map(el => {
+                        return [{ text: el.name, url: el.link }];
+                    })
+                }
+            });
             break;
 
         default:
@@ -91,3 +112,5 @@ bot.on('message', async (msg) => {
             break;
     }
 });
+
+
