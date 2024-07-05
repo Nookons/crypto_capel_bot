@@ -4,13 +4,14 @@ import {doc, getDoc, updateDoc, setDoc} from 'firebase/firestore';
 
 import Main from "./Display/Main";
 import Header from "./Header/Header";
-import Posts from "./Posts/Posts";
 import {useTelegram} from "./Hooks/useTelegram";
 import {db} from "./firebase";
 
 import './App.css';
 import dayjs from "dayjs";
 import Footer from "./Footer/Footer";
+import Favorite from "./Pages/Favorite/Favorite";
+import News from "./Pages/News/News";
 
 const App = () => {
     const {tg, user} = useTelegram();
@@ -56,9 +57,10 @@ const App = () => {
     }, [user]);
 
     return (
-        <div className="container">
+        <div>
             <Header/>
-            {/*{user ? (
+            <div className="container">
+                {/*{user ? (
                 <h5 style={{textAlign: "center", padding: 14}}>
                     Hello {user.first_name} {user.last_name} - {user.username}
                 </h5>
@@ -66,11 +68,13 @@ const App = () => {
                 nookon
             </h5>)
             }*/}
-            <Routes>
-                <Route index element={<Main/>}/>
-                <Route path="/posts" element={<Posts/>}/>
-            </Routes>
-            <Footer />
+                <Routes>
+                    <Route index element={<Main />}/>
+                    <Route path="/favorite" element={<Favorite />}/>
+                    <Route path="/news" element={<News />}/>
+                </Routes>
+                {/*<Footer />*/}
+            </div>
         </div>
     );
 };

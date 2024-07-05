@@ -1,2 +1,4 @@
 
-export const POST_PAGE_ROUTE = "/posts"
+export const HOME_ROUTE = "/"
+export const FAVORITE_ROUTE = "/favorite"
+export const NEWS_ROUTE = "/news"

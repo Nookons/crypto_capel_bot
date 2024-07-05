@@ -1,5 +1,6 @@
-const { initializeApp }     = require("firebase/app");
-const { getFirestore }      = require("firebase/firestore");
+const { initializeApp } = require('firebase/app');
+const { getFirestore } = require('firebase/firestore');
+const { getStorage } = require('firebase/storage');
 
 const firebaseConfig = {
     apiKey: "AIzaSyA9pmdiqwOblPOMWZCPQq_Gldaaa_yv_Vo",
@@ -11,7 +12,8 @@ const firebaseConfig = {
     measurementId: "G-1KHC3P7MFD"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
+const storage = getStorage(firebaseApp);
 
-module.exports = db;
+module.exports = { db, storage };
