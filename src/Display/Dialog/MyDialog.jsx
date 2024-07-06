@@ -16,16 +16,44 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import {Add} from "@mui/icons-material";
 
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
+import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
 
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
+import {useDispatch, useSelector} from "react-redux";
+import {addToFavoriteAction, removeFromFavoriteAction} from "../../store/reducers/userReducer";
+import {addToFavorite, removeFromFavorite} from "../../store/reducers/asyncActions/user/Favorite";
 
 const MyDialog = ({dialog, setDialog}) => {
+    const user = useSelector(state => state.user)
+    const dispatch = useDispatch();
+
+    const [isFavorite, setIsFavorite] = useState(false);
+
     const [currentItem, setCurrentItem] = useState({
         isLoading: false,
         item: null,
         error: "",
     });
+
+    useEffect(() => {
+        if (currentItem.item && currentItem.item.id) {
+            const isFavorite = user.favorite.includes(currentItem.item.id);
+
+            console.log(isFavorite);
+
+            if (isFavorite) {
+                setIsFavorite(true);
+            } else {
+                setIsFavorite(false);
+            }
+        }
+    }, [user.favorite, currentItem.item]);
+
+
+
+
 
     useEffect(() => {
         async function getItem() {
@@ -62,8 +90,15 @@ const MyDialog = ({dialog, setDialog}) => {
     const onAddLike = async () => {
         alert("Coming soon...")
     }
+
     const onAddFavorite = async () => {
-        alert("Coming soon...")
+        const id = currentItem.item.id;
+        dispatch(addToFavorite({id, user}))
+    }
+
+    const onRemoveFromFavorite = async () => {
+        const id =  currentItem.item.id
+        dispatch(removeFromFavorite({id, user}))
     }
 
     const onStartClick = () => {
@@ -96,9 +131,17 @@ const MyDialog = ({dialog, setDialog}) => {
                 <IconButton onClick={onAddLike} aria-label="add">
                     <FavoriteBorderIcon sx={{fontSize: 24}}/>
                 </IconButton>
-                <IconButton onClick={onAddFavorite} aria-label="add">
-                    <BookmarkAddIcon sx={{fontSize: 24}}/>
-                </IconButton>
+                {
+                    isFavorite
+                        ?
+                        <IconButton onClick={onRemoveFromFavorite} aria-label="remove">
+                            <BookmarkRemoveIcon sx={{fontSize: 24, color: "red"}}/>
+                        </IconButton>
+                        :
+                        <IconButton onClick={onAddFavorite} aria-label="add">
+                            <BookmarkAddIcon sx={{fontSize: 24}}/>
+                        </IconButton>
+                }
 
                 {currentItem.item
                     ?

@@ -7,12 +7,13 @@ import {Box, Button, ButtonGroup, Slider} from "@mui/material";
 import {IOSSlider} from "../Assets/Sliders";
 import {useNavigate} from "react-router-dom";
 import {FAVORITE_ROUTE, NEWS_ROUTE} from "../utils/Routes";
+import {useSelector} from "react-redux";
 
 
-const Main = ({user}) => {
+const Main = () => {
     const navigate = useNavigate();
+    const projects = useSelector(state => state.projects)
 
-    const [projectsData, setProjectsData] = useState([]);
 
     const [dialog, setDialog] = useState({
         isOpen: false,
@@ -20,21 +21,8 @@ const Main = ({user}) => {
         name: ""
     });
 
-    useEffect(() => {
-        const path = query(collection(db, "projects"));
 
-        const unsubscribe = onSnapshot(path, (querySnapshot) => {
-            const projects = [];
-            querySnapshot.forEach((doc) => {
-                projects.push(doc.data());
-            });
-            const filtered =
-            setProjectsData(projects);
-        });
-    }, []);
-
-
-    if (!projectsData.length) {
+    if (!projects.length) {
         return (
             <div className={"snackbar"}>
 
@@ -50,7 +38,7 @@ const Main = ({user}) => {
                 <Button onClick={() => navigate(NEWS_ROUTE)}>New</Button>
             </ButtonGroup>
             <div className={"Display"}>
-                {projectsData.map((el, index) => {
+                {projects.map((el, index) => {
 
                     return (
                         <div

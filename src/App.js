@@ -12,13 +12,37 @@ import dayjs from "dayjs";
 import Footer from "./Footer/Footer";
 import Favorite from "./Pages/Favorite/Favorite";
 import News from "./Pages/News/News";
+import {useDispatch} from "react-redux";
+import {fetchUser} from "./store/reducers/asyncActions/user/getUser";
+import {fetchProjects} from "./store/reducers/asyncActions/getProjects";
 
 const App = () => {
+    const dispatch = useDispatch();
     const {tg, user} = useTelegram();
 
     useEffect(() => {
         tg.ready();
         tg.expand();
+
+        const notTelegramUserTemp = {
+            allows_write_to_pm: true,
+            first_name: "Dmytro",
+            id: 662123629,
+            language_code: "en",
+            last_name: "Kolomiiets",
+            username: "Nookon"
+        }
+
+        const id = user ? user.id : notTelegramUserTemp.id
+
+        if (user) {
+            dispatch({type: "USER_ENTER", payload: user})
+        } else {
+            dispatch({type: "USER_ENTER", payload: notTelegramUserTemp})
+        }
+
+        dispatch(fetchUser(id))
+        dispatch(fetchProjects())
     }, [tg]);
 
     useEffect(() => {
