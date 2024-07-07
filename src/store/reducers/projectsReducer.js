@@ -6,15 +6,7 @@ export const projectsReducer = (state = defaultState, action) => {
             return [...action.payload]
 
         case "ADD_LIKE":
-            return state.map(item => {
-                if (item.id === action.payload) {
-                    return {
-                        ...item,
-                        likes: item.likes + 1
-                    };
-                }
-                return item;
-            });
+            return state
         case "REMOVE_LIKE":
             return state
 
