@@ -14,7 +14,7 @@ import Favorite from "./Pages/Favorite/Favorite";
 import News from "./Pages/News/News";
 import {useDispatch} from "react-redux";
 import {fetchUser} from "./store/reducers/asyncActions/user/getUser";
-import {fetchProjects} from "./store/reducers/asyncActions/getProjects";
+import {fetchProjects} from "./store/reducers/asyncActions/user/getProjects";
 
 const App = () => {
     const dispatch = useDispatch();

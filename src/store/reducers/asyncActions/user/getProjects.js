@@ -1,6 +1,6 @@
 import {collection, doc, getDoc, onSnapshot, query} from "firebase/firestore";
-import {db} from "../../../firebase";
-import {fetchProjectsAction} from "../projectsReducer";
+import {db} from "../../../../firebase";
+import {fetchProjectsAction} from "../../projectsReducer";
 
 export const fetchProjects = () => {
     return async function(dispatch) {

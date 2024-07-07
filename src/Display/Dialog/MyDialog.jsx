@@ -16,6 +16,7 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import {Add} from "@mui/icons-material";
 
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
@@ -24,85 +25,70 @@ import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import {useDispatch, useSelector} from "react-redux";
 import {addToFavoriteAction, removeFromFavoriteAction} from "../../store/reducers/userReducer";
 import {addToFavorite, removeFromFavorite} from "../../store/reducers/asyncActions/user/Favorite";
+import {addUserLike, removeUserLike} from "../../store/reducers/asyncActions/project/Likes";
+import {addLikeAction} from "../../store/reducers/projectsReducer";
+
+import AddCommentIcon from '@mui/icons-material/AddComment';
 
 const MyDialog = ({dialog, setDialog}) => {
     const user = useSelector(state => state.user)
+    const projects = useSelector(state => state.projects)
     const dispatch = useDispatch();
 
-    const [isFavorite, setIsFavorite] = useState(false);
+    const [isFavorite, setIsFavorite]   = useState(false);
+    const [isLiked, setIsLiked]         = useState(false);
 
-    const [currentItem, setCurrentItem] = useState({
-        isLoading: false,
-        item: null,
-        error: "",
-    });
+    const [currentItem, setCurrentItem] = useState(null);
 
     useEffect(() => {
-        if (currentItem.item && currentItem.item.id) {
-            const isFavorite = user.favorite.includes(currentItem.item.id);
+        if (currentItem && currentItem.id) {
+            const isFavorite = user.favorite.includes(currentItem.id);
+            const isLiked = currentItem.userLiked.includes(user.id);
 
-            console.log(isFavorite);
 
-            if (isFavorite) {
-                setIsFavorite(true);
-            } else {
-                setIsFavorite(false);
-            }
+            setIsFavorite(isFavorite);
+            setIsLiked(isLiked)
         }
-    }, [user.favorite, currentItem.item]);
+    }, [user.favorite, currentItem]);
 
 
 
 
 
     useEffect(() => {
-        async function getItem() {
-            setCurrentItem((prevState) => ({...prevState, isLoading: true}))
-
-            try {
-                const docRef = doc(db, "projects", dialog.name);
-                const docSnap = await getDoc(docRef);
-
-                if (docSnap.exists()) {
-                    setCurrentItem({isLoading: false, item: docSnap.data(), error: ""})
-                }
-            } catch (error) {
-                setCurrentItem({isLoading: false, item: null, error: error.toString()})
-            }
+        if (projects) {
+            const founded = projects.find(item => item.id === dialog.id)
+            setCurrentItem(founded)
         }
-
-        if (dialog.name) {
-            getItem();
-        }
-    }, [dialog]);
+    }, [dialog, projects]);
 
     const onClose = () => {
+        setCurrentItem(null)
         setDialog({isOpen: false, id: 0})
-        setTimeout(() => {
-            setCurrentItem({
-                isLoading: false,
-                item: null,
-                error: "",
-            })
-        }, 250)
     }
 
     const onAddLike = async () => {
-        alert("Coming soon...")
+        const data = currentItem;
+        dispatch(addUserLike({data, user}))
+    }
+
+    const onRemoveLike = async () => {
+        const data = currentItem;
+        dispatch(removeUserLike({data, user}))
     }
 
     const onAddFavorite = async () => {
-        const id = currentItem.item.id;
+        const id = currentItem.id;
         dispatch(addToFavorite({id, user}))
     }
 
     const onRemoveFromFavorite = async () => {
-        const id =  currentItem.item.id
+        const id =  currentItem.id
         dispatch(removeFromFavorite({id, user}))
     }
 
     const onStartClick = () => {
-        window.location.href = currentItem.item.link
+        window.location.href = currentItem.link
     }
 
     return (
@@ -114,28 +100,36 @@ const MyDialog = ({dialog, setDialog}) => {
             maxWidth={"xs"}>
             <DialogTitle id="alert-dialog-title">
                 <p style={{color: "gray", display: "flex", alignItems: "center", gap: 6}}><ThumbUpIcon
-                    sx={{fontSize: 14}}/> {currentItem.item?.likes.toLocaleString()}</p>
+                    sx={{fontSize: 14}}/> {currentItem ? currentItem?.likes.toLocaleString() : 0}</p>
 
-                {currentItem.item
-                    ? <Avatar src={currentItem?.item.imgPath} variant={"rounded"}
+                {currentItem
+                    ? <Avatar src={currentItem?.imgPath} variant={"rounded"}
                               sx={{width: "100%", height: 125, my: 2}}>N</Avatar>
                     : <Skeleton variant="rectangular" width={"100%"} height={125}/>
                 }
-                {currentItem.item ? <h4>{currentItem.item.name} </h4> : <Skeleton variant="text"/>}
+                {currentItem ? <h4>{currentItem.name} </h4> : <Skeleton variant="text"/>}
             </DialogTitle>
             <DialogContent>
-                {currentItem.item ? <p>{currentItem.item.description}</p> :
+                {currentItem ? <p>{currentItem.description}</p> :
                     <Skeleton variant="rectangular" width={250} height={150}/>}
             </DialogContent>
             <DialogActions>
-                <IconButton onClick={onAddLike} aria-label="add">
-                    <FavoriteBorderIcon sx={{fontSize: 24}}/>
-                </IconButton>
+                {
+                    isLiked
+                        ?
+                        <IconButton onClick={onRemoveLike} aria-label="remove">
+                            <FavoriteIcon sx={{fontSize: 24, color: "#67bfff"}}/>
+                        </IconButton>
+                        :
+                        <IconButton onClick={onAddLike} aria-label="add">
+                            <FavoriteBorderIcon sx={{fontSize: 24}}/>
+                        </IconButton>
+                }
                 {
                     isFavorite
                         ?
                         <IconButton onClick={onRemoveFromFavorite} aria-label="remove">
-                            <BookmarkRemoveIcon sx={{fontSize: 24, color: "red"}}/>
+                            <BookmarkRemoveIcon sx={{fontSize: 24, color: "#67bfff"}}/>
                         </IconButton>
                         :
                         <IconButton onClick={onAddFavorite} aria-label="add">
@@ -143,12 +137,17 @@ const MyDialog = ({dialog, setDialog}) => {
                         </IconButton>
                 }
 
-                {currentItem.item
+                <IconButton onClick={() => alert("coming soon... 🙈")} aria-label="add">
+                    <AddCommentIcon sx={{fontSize: 24}}/>
+                </IconButton>
+
+                {currentItem
                     ?
                     <IconButton sx={{color: "green"}} onClick={onStartClick} aria-label="add">
                         <PlayCircleFilledIcon sx={{fontSize: 44}}/>
                     </IconButton>
-                    : <Skeleton variant="rectangular" width={95} height={25}/>}
+                    : <Skeleton variant="rectangular" width={95} height={25}/>
+                }
             </DialogActions>
         </Dialog>
     )
