@@ -8,7 +8,7 @@ export const addUserLike = ({data, user}) => {
         const id = data.id;
         const ref = doc(db, "projects", data.name);
 
-        await setDoc(ref, {...data, userLiked: [...data.userLiked, user.id]});
+        await setDoc(ref, {...data, likes: data.likes + 1, userLiked: [...data.userLiked, user.id]});
 
         dispatch(addLikeAction(id))
     }
