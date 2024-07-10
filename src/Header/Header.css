@@ -19,7 +19,7 @@
 }
 
 .Logo > img {
-    max-width: 25px;
+    max-width: 35px;
 }
 
 .User_block {
@@ -27,18 +27,9 @@
     gap: 2px;
 }
 
-.User_block > button  {
-    background: none;
-    outline: none;
-    border: none;
-    padding: 4px 4px;
-}
 
 .User_block > button > svg {
-    width: 50px;
-    height: 30px;
-    background: #101010;
-    color: white;
-    padding: 4px;
-    border-radius: 5px;
+    width: 25px;
+    height: 25px;
+    color: #1a1a1a;
 }

@@ -40,6 +40,7 @@ const handleAddProject = async (bot, msg, userGlobalStates, callBack) => {
                 await setDoc(userDocRef, {
                     id: Date.now(),
                     likes: 0,
+                    userLiked: [],
                     createdTime: dayjs().format("YYYY-MM-DD HH:mm"),
                     updatedTime: dayjs().format("YYYY-MM-DD HH:mm"),
                     ...userState.project

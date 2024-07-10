@@ -1,20 +1,17 @@
 import React, {useEffect} from 'react';
-import {Route, Routes} from 'react-router-dom';
 import {doc, getDoc, updateDoc, setDoc} from 'firebase/firestore';
 
-import Main from "./Display/Main";
 import Header from "./Header/Header";
 import {useTelegram} from "./Hooks/useTelegram";
 import {db} from "./firebase";
 
 import './App.css';
 import dayjs from "dayjs";
-import Footer from "./Footer/Footer";
-import Favorite from "./Pages/Favorite/Favorite";
-import News from "./Pages/News/News";
 import {useDispatch} from "react-redux";
 import {fetchUser} from "./store/reducers/asyncActions/user/getUser";
 import {fetchProjects} from "./store/reducers/asyncActions/user/getProjects";
+import AppRouter from "./components/AppRoute";
+import {BrowserRouter} from "react-router-dom";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -29,8 +26,10 @@ const App = () => {
             first_name: "Dmytro",
             id: 662123629,
             language_code: "en",
+            favorite: [1719600437313, 1720138163163, 1719600785181, 1720380641358, 1717616509003],
             last_name: "Kolomiiets",
-            username: "Nookon"
+            username: "Nookon",
+            capelCoin: 0.0150
         }
 
         const id = user ? user.id : notTelegramUserTemp.id
@@ -48,16 +47,11 @@ const App = () => {
     useEffect(() => {
         async function setUser() {
             if (user) {
-                console.log('User object:', user);
                 const userDocId = `user_${user.id}`;
-                console.log('User document ID:', userDocId);
 
                 try {
                     const userDocRef = doc(db, "users", userDocId);
-                    console.log('User document reference:', userDocRef);
-
                     const docSnap = await getDoc(userDocRef);
-                    console.log('Document snapshot:', docSnap);
 
                     if (docSnap.exists()) {
                         await updateDoc(userDocRef, {
@@ -69,7 +63,6 @@ const App = () => {
                             applicationId: Date.now(),
                             ...user
                         });
-                        console.log('New user document set');
                     }
                 } catch (error) {
                     console.error("Error updating/setting user document:", error);
@@ -81,25 +74,10 @@ const App = () => {
     }, [user]);
 
     return (
-        <div>
-            <Header/>
-            <div className="container">
-                {/*{user ? (
-                <h5 style={{textAlign: "center", padding: 14}}>
-                    Hello {user.first_name} {user.last_name} - {user.username}
-                </h5>
-            ) : (<h5 style={{textAlign: "center", padding: 14}}>
-                nookon
-            </h5>)
-            }*/}
-                <Routes>
-                    <Route index element={<Main />}/>
-                    <Route path="/favorite" element={<Favorite />}/>
-                    <Route path="/news" element={<News />}/>
-                </Routes>
-                {/*<Footer />*/}
-            </div>
-        </div>
+        <>
+            <Header />
+            <AppRouter />
+        </>
     );
 };
 

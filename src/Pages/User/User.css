@@ -1,0 +1,44 @@
+
+.Block {
+    background:  linear-gradient(0deg, #d7d7d7 0%, #eeeeee 100%);
+    padding: 8px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 2px 2px 5px rgba(0,0,0, 0.25);
+}
+
+
+.Block_info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.Block_favorite {
+    margin-top: 14px;
+    background:  linear-gradient(0deg, #d7d7d7 0%, #eeeeee 100%);
+    padding: 8px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 2px 2px 5px rgba(0,0,0, 0.25);
+}
+
+.Block_favorite_projects {
+    margin-top: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 4px;
+    width: 100%;
+}
+
+.Project {
+
+}

@@ -6,7 +6,7 @@ import MyDialog from "./Dialog/MyDialog";
 import {Box, Button, ButtonGroup, Slider} from "@mui/material";
 import {IOSSlider} from "../Assets/Sliders";
 import {useNavigate} from "react-router-dom";
-import {FAVORITE_ROUTE, NEWS_ROUTE} from "../utils/Routes";
+import {FAVORITE_ROUTE, NEWS_ROUTE} from "../utils/Consts";
 import {useSelector} from "react-redux";
 
 
@@ -31,7 +31,7 @@ const Main = () => {
     }
 
     return (
-        <div>
+        <div className={"container"}>
             <MyDialog dialog={dialog} setDialog={setDialog}/>
             <ButtonGroup sx={{mb: 1}} size="small" variant="outlined" aria-label="Basic button group">
                 <Button onClick={() => navigate(FAVORITE_ROUTE)}>Favorite</Button>

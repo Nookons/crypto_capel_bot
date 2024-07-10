@@ -6,6 +6,8 @@
   box-sizing: border-box;
 }
 
+
+
 h1,h2,h3,h4,h5,h6,p,span,article {
   color: #1e1e1e;
   font-family: "Noto Sans JP", sans-serif;
@@ -17,6 +19,7 @@ h1,h2,h3,h4,h5,h6,p,span,article {
   max-width: 350px;
   margin: 0 auto;
   margin-top: 100px;
+  padding: 4px;
 }
 
 h1 { font-size: clamp(24px, 6vw, 36px) !important;}
