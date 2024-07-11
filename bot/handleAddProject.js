@@ -11,13 +11,13 @@ const handleAddProject = async (bot, msg, userGlobalStates, callBack) => {
     const text = msg.text;
 
 
-    if (!userStates[userId]) {
-        userStates[userId] = {
+    if (!userStates[chatId]) {
+        userStates[chatId] = {
             state: "default"
         };
     }
 
-    const userState = userStates[userId];
+    const userState = userStates[chatId];
 
 
     if (!msg.text) {

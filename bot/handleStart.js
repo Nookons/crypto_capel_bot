@@ -9,8 +9,8 @@ const handleStart = async (bot, msg) => {
     const userId = msg.from.id;
     const text = msg.text;
 
-    if (!userStates[userId]) {
-        userStates[userId] = {};
+    if (!userStates[chatId]) {
+        userStates[chatId] = {};
     }
 
     switch (text) {

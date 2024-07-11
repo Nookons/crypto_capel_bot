@@ -1,48 +1,67 @@
 require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
-const { handleStart } = require("./bot/handleStart");
-const { handleAddProject } = require("./bot/handleAddProject");
-const {doc, setDoc} = require("firebase/firestore");
+const {handleStart} = require("./bot/handleStart");
+const {handleAddProject} = require("./bot/handleAddProject");
+const {doc, setDoc, updateDoc} = require("firebase/firestore");
 const {db} = require("./firebase");
 const dayjs = require("dayjs");
+const observeMessage = require("./bot/observeMessages");
+const {handleEditProject} = require("./bot/editProjects");
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
-const bot = new TelegramBot(token, { polling: true });
+const bot = new TelegramBot(token, {polling: true});
 
 const userGlobalStates = {};
 
-/*bot.on('callback_query', callBackMsg => {
-    const msg = callBackMsg.message;
-    const callBack = callBackMsg.data;
-
-    handleAddProject(bot, msg, userGlobalStates, callBack)
-});*/
+const changeObject = {};
 
 const channelId = '-1002243510504'; // Идентификатор вашего канала
 
-async function addNewMessage(msg) {
-    try {
-        const data = {
-            message_id: msg.message_id,
-            from: msg.from || {},  // Заменяем undefined на пустой объект, если msg.from не определен
-            chat: msg.chat || {},  // Заменяем undefined на пустой объект, если msg.chat не определен
-            date: msg.date || 0,   // Заменяем undefined на 0, если msg.date не определен
-            text: msg.text || '',  // Заменяем undefined на пустую строку, если msg.text не определен
-            caption: msg.caption || '',  // Заменяем undefined на пустую строку, если msg.text не определен
-            photo: msg.photo || [], // Заменяем undefined на пустой массив, если msg.photo не определен
-            imgPaths: imgPaths || [] // Заменяем undefined на пустой массив, если msg.photo не определен
-        };
 
-        const docRef = doc(db, 'channelPosts', msg.message_id.toString());
-        await setDoc(docRef, data);
-    } catch (error) {
-        console.error('Error updating/setting user document:', error);
+bot.on('callback_query', callBackMsg => {
+    const msg = callBackMsg.message;
+    const chatId = msg.chat.id;
+    const callBack = callBackMsg.data;
+
+    const userState = userGlobalStates[chatId]
+
+    switch (userState.state) {
+        case "edit":
+            userState.state = "pending_option_to_change"
+            changeObject.path = callBack;
+
+            bot.sendMessage(chatId, `Что вы хотите изменить!`, {
+                parse_mode: 'HTML',
+                reply_markup: {
+                    inline_keyboard: [
+                        [{text: 'Название', callback_data: 'name'}, {text: 'Описание', callback_data: 'description'}],
+                        [{text: 'Реф ссылку', callback_data: 'ref_link'}]
+                    ]
+                }
+            });
+            break
+        case "pending_option_to_change":
+            userState.state = "pending_user_change"
+            changeObject.updateType = callBack;
+            bot.sendMessage(chatId, `Отправь мне новые данные и я их изменню`);
+            break
+        default:
+            bot.sendMessage(chatId, `Что-то пошло не так, обратитесь к Димке!`);
+            break
     }
-}
+
+    if (userState.state === "edit") {
+        userState.state = "pending_option_to_change"
+        userState.id = callBack;
+
+
+    }
+});
+
 
 bot.on('channel_post', (msg) => {
     if (msg.chat.id.toString() === channelId) {
-        addNewMessage(msg)
+        observeMessage(msg)
     }
 });
 
@@ -58,13 +77,13 @@ bot.on('message', (msg) => {
     const userId = msg.from.id;
     const text = msg.text;
 
-    if (!userGlobalStates[userId]) {
-        userGlobalStates[userId] = {
+    if (!userGlobalStates[chatId]) {
+        userGlobalStates[chatId] = {
             state: ""
         };
     }
 
-    const userState = userGlobalStates[userId];
+    const userState = userGlobalStates[chatId];
 
     switch (text) {
         case "/start":
@@ -74,12 +93,46 @@ bot.on('message', (msg) => {
         case "/add_project":
             userState.state = 'add';
             break;
+        case "/edit_project":
+            userState.state = 'edit';
+            break;
     }
 
     switch (userState.state) {
         case "add":
             handleAddProject(bot, msg, userGlobalStates);
             break;
+        case "edit":
+            handleEditProject(bot, msg, userGlobalStates);
+            break;
+
+        case "pending_user_change":
+            userState.state = ""
+
+            switch (changeObject.updateType) {
+                case "name":
+                    changeObject.name = text
+                    break
+                case "description":
+                    changeObject.description = text
+                    break
+                case "ref_link":
+                    changeObject.link = text
+                    break
+            }
+
+            console.log(text);
+
+            try {
+                const updateRef = doc(db, "projects", changeObject.path);
+
+                updateDoc(updateRef, {
+                    ...changeObject
+                });
+            } catch (err) {
+                console.log(err);
+            }
+            break
     }
 });
 
