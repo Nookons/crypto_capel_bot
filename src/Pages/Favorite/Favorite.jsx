@@ -55,7 +55,7 @@ const Favorite = () => {
                                                 <div className={"Favorite_item_info_wrapper"}>
                                                     <div className={"Favorite_item_info"}>
                                                         <div style={{display: "flex", gap: 8, alignItems: "center"}}>
-                                                            <Avatar variant={"rounded"} sx={{width: 64, height: "100%"}} src={el.imgPath}>N</Avatar>
+                                                            <Avatar variant={"rounded"} sx={{width: 64, height: 64}} src={el.imgPath}>N</Avatar>
                                                             <div>
                                                                 <h6>{el.name}</h6>
                                                                 <article>Last launch: 12-07-2024</article>
