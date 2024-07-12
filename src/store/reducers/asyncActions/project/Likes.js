@@ -6,9 +6,9 @@ import {addLikeAction, removeLikeAction} from "../../projectsReducer";
 export const addUserLike = ({data, user}) => {
     return async function (dispatch) {
         const id = data.id;
-        const ref = doc(db, "projects", data.id);
+        const ref = doc(db, "projects", id);
 
-        await setDoc(ref, {...data, likes: data.likes + 1, userLiked: [...data.userLiked, user.id]});
+        await setDoc(ref, {...data, likes: data.likes + 1, userLiked: [...data.userLiked, id]});
 
         dispatch(addLikeAction(id))
     }
