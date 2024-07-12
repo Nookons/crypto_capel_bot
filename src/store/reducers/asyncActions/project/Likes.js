@@ -6,7 +6,7 @@ import {addLikeAction, removeLikeAction} from "../../projectsReducer";
 export const addUserLike = ({data, user}) => {
     return async function (dispatch) {
         const id = data.id;
-        const ref = doc(db, "projects", data.name);
+        const ref = doc(db, "projects", data.id);
 
         await setDoc(ref, {...data, likes: data.likes + 1, userLiked: [...data.userLiked, user.id]});
 
@@ -17,7 +17,7 @@ export const addUserLike = ({data, user}) => {
 export const removeUserLike = ({data, user}) => {
     return async function (dispatch) {
         const id = data.id;
-        const ref = doc(db, "projects", data.name);
+        const ref = doc(db, "projects", data.id);
 
         await updateDoc(ref, {
             userLiked: data.userLiked.filter(item => item !== user.id),

@@ -54,10 +54,10 @@
       "last 1 safari version"
     ]
   },
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "description": "This is bot for telegram chanel Crypto Capel created by Nookon",
   "main": "bot.js",
   "keywords": [],
-  "author": "",
+  "author": "Kolomiiets Dmytro",
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^3.1.3"

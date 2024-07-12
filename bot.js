@@ -1,21 +1,21 @@
 require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
 const {handleStart} = require("./bot/handleStart");
-const {handleAddProject} = require("./bot/handleAddProject");
+const {handleAddProject} = require("./bot/AddProject/AddProject");
 const {doc, setDoc, updateDoc} = require("firebase/firestore");
 const {db} = require("./firebase");
 const dayjs = require("dayjs");
-const observeMessage = require("./bot/observeMessages");
 const {handleEditProject} = require("./bot/editProjects");
+const {observeMessage} = require("./bot/observeMessages");
+const {editProjects} = require("./bot/EditProjects/Edit");
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
+
 const bot = new TelegramBot(token, {polling: true});
 
-const userGlobalStates = {};
-
-const changeObject = {};
-
-const channelId = '-1002243510504'; // Идентификатор вашего канала
+const userGlobalStates  = {};
+const changeObject      = {};
+const channelId      = '-1002243510504';
 
 
 bot.on('callback_query', callBackMsg => {
@@ -25,37 +25,7 @@ bot.on('callback_query', callBackMsg => {
 
     const userState = userGlobalStates[chatId]
 
-    switch (userState.state) {
-        case "edit":
-            userState.state = "pending_option_to_change"
-            changeObject.path = callBack;
-
-            bot.sendMessage(chatId, `Что вы хотите изменить!`, {
-                parse_mode: 'HTML',
-                reply_markup: {
-                    inline_keyboard: [
-                        [{text: 'Название', callback_data: 'name'}, {text: 'Описание', callback_data: 'description'}],
-                        [{text: 'Реф ссылку', callback_data: 'ref_link'}]
-                    ]
-                }
-            });
-            break
-        case "pending_option_to_change":
-            userState.state = "pending_user_change"
-            changeObject.updateType = callBack;
-            bot.sendMessage(chatId, `Отправь мне новые данные и я их изменню`);
-            break
-        default:
-            bot.sendMessage(chatId, `Что-то пошло не так, обратитесь к Димке!`);
-            break
-    }
-
-    if (userState.state === "edit") {
-        userState.state = "pending_option_to_change"
-        userState.id = callBack;
-
-
-    }
+    editProjects(userState, callBack)
 });
 
 
@@ -124,7 +94,9 @@ bot.on('message', (msg) => {
             console.log(text);
 
             try {
-                const updateRef = doc(db, "projects", changeObject.path);
+                const updateRef = doc(db, "projects", changeObject.id);
+
+                console.log(updateRef);
 
                 updateDoc(updateRef, {
                     ...changeObject

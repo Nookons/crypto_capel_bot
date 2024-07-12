@@ -15,7 +15,7 @@ async function observeMessage(msg) {
 
         const docRef = doc(db, 'channelPosts', msg.message_id.toString());
         await setDoc(docRef, data);
-        console.error('post added');
+        console.error('Find new post from chanel');
     } catch (error) {
         console.error('Error updating/setting user document:', error);
     }
