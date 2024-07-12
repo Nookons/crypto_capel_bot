@@ -7,6 +7,10 @@ import './User.css'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import GradeIcon from '@mui/icons-material/Grade';
 
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import LanguageIcon from '@mui/icons-material/Language';
+import InsertLinkIcon from '@mui/icons-material/InsertLink';
+
 const User = () => {
     const user = useSelector((state) => state.user);
     const projects = useSelector(state => state.projects)
@@ -32,7 +36,7 @@ const User = () => {
     return (
         <div className={"container"}>
             <div className={"Block"}>
-                <Avatar variant={"rounded"}>N</Avatar>
+                <Avatar variant={"rounded"}>{user.username.slice(0, 1)}</Avatar>
                 <div className={"Block_info"}>
                     <h6>{user.username}.tg </h6>
                     <p>{user.capelCoin} $</p>
@@ -41,13 +45,38 @@ const User = () => {
                     <ArrowForwardIcon/>
                 </IconButton>
             </div>
+            <div className={"Button_wrapper"}>
+                <div className={"Block_button"}>
+                    <Avatar sx={{width: "24px", height: "24px"}} variant={"rounded"}><AccountTreeIcon/></Avatar>
+                    <div className={"Block_info"}>
+                        <article>My networks</article>
+                    </div>
+                    <IconButton aria-label="add">
+                        <ArrowForwardIcon/>
+                    </IconButton>
+                </div>
+                <div className={"Block_button"}>
+                    <Avatar sx={{width: "24px", height: "24px"}} variant={"rounded"}><InsertLinkIcon/></Avatar>
+                    <div className={"Block_info"}>
+                        <article>Recovery inviter </article>
+                    </div>
+                    <IconButton aria-label="add">
+                        <ArrowForwardIcon/>
+                    </IconButton>
+                </div>
+                <div className={"Block_button"}>
+                    <Avatar sx={{width: "24px", height: "24px"}} variant={"rounded"}><LanguageIcon/></Avatar>
+                    <div className={"Block_info"}>
+                        <article>Language</article>
+                    </div>
+                    <IconButton aria-label="add">
+                        <ArrowForwardIcon/>
+                    </IconButton>
+                </div>
+            </div>
             {userFavorite
                 ?
                 <div className={"Block_favorite"}>
-                    <div style={{width: "100%", display: "flex", alignItems: "center", gap: 8}}>
-                        <GradeIcon/>
-                        <article> Favorite projects</article>
-                    </div>
                     <div className={"Block_favorite_projects"}>
                         {userFavorite.map((el, index) => {
 

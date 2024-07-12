@@ -35,15 +35,19 @@ const handleAddProject = async (bot, msg, userGlobalStates, callBack) => {
             userState.project.imgPath = fileUrl;
             userState.project.fileId = fileId;
 
+            const template = {
+                id: Date.now(),
+                likes: 0,
+                userLiked: [],
+                createdTime: dayjs().format("YYYY-MM-DD HH:mm"),
+                updatedTime: dayjs().format("YYYY-MM-DD HH:mm"),
+                ...userState.project
+            }
+
             try {
-                const userDocRef = doc(db, "projects", userState.project.name);
+                const userDocRef = doc(db, "projects", template.id.toString());
                 await setDoc(userDocRef, {
-                    id: Date.now(),
-                    likes: 0,
-                    userLiked: [],
-                    createdTime: dayjs().format("YYYY-MM-DD HH:mm"),
-                    updatedTime: dayjs().format("YYYY-MM-DD HH:mm"),
-                    ...userState.project
+                    ...template
                 });
 
                 await bot.sendMessage(chatId, `Проект успешно добавлен!`);

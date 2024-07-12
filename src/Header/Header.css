@@ -1,15 +1,12 @@
 .Main {
-    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    background-color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 2vw;
     padding: 14px;
-    box-shadow: 0 0 15px rgba(0,0,0, 15);
     z-index: 99;
 }
 .Logo {

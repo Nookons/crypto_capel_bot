@@ -1,33 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {
     Avatar,
-    Button,
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle, IconButton,
     Skeleton
 } from "@mui/material";
-import {doc, getDoc, updateDoc} from "firebase/firestore";
-import {db} from "../../firebase";
-
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import {Add} from "@mui/icons-material";
-
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
-
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import {useDispatch, useSelector} from "react-redux";
-import {addToFavoriteAction, removeFromFavoriteAction} from "../../store/reducers/userReducer";
 import {addToFavorite, removeFromFavorite} from "../../store/reducers/asyncActions/user/Favorite";
 import {addUserLike, removeUserLike} from "../../store/reducers/asyncActions/project/Likes";
-import {addLikeAction} from "../../store/reducers/projectsReducer";
-
 import AddCommentIcon from '@mui/icons-material/AddComment';
 
 const MyDialog = ({dialog, setDialog}) => {
@@ -45,15 +33,10 @@ const MyDialog = ({dialog, setDialog}) => {
             const isFavorite = user.favorite.includes(currentItem.id);
             const isLiked = currentItem.userLiked.includes(user.id);
 
-
             setIsFavorite(isFavorite);
             setIsLiked(isLiked)
         }
     }, [user.favorite, currentItem]);
-
-
-
-
 
     useEffect(() => {
         if (projects) {
@@ -88,6 +71,7 @@ const MyDialog = ({dialog, setDialog}) => {
     }
 
     const onStartClick = () => {
+        onClose();
         window.location.href = currentItem.link
     }
 

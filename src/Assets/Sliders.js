@@ -6,13 +6,13 @@ const iOSBoxShadow = '0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0
 
 export const IOSSlider = styled(Slider)(({ theme }) => ({
     color: theme.palette.mode === 'dark' ? '#0a84ff' : '#007bff',
-    height: 15,
-    padding: '15px 0',
+    height: 8,
+    padding: '8px 0',
     '& .MuiSlider-thumb': {
-        height: 0,
-        width: 0,
-        backgroundColor: '#000000',
-        boxShadow: '0 0 2px 0px rgba(0, 0, 0, 0.1)',
+        height: 16,
+        width: 16,
+        backgroundColor: '#f0c850',
+        boxShadow: '3px 3px 0 0px rgba(0, 0, 0, 0.85)',
         '&:focus, &:hover, &.Mui-active': {
             boxShadow: '0px 0px 3px 1px rgba(0, 0, 0, 0.1)',
             // Reset on touch devices, it doesn't add specificity
@@ -41,10 +41,10 @@ export const IOSSlider = styled(Slider)(({ theme }) => ({
     },
     '& .MuiSlider-track': {
         border: 'none',
-        height: 15,
+        height: 8,
     },
     '& .MuiSlider-rail': {
-        opacity: 0.5,
+        opacity: 1,
         boxShadow: 'inset 0px 0px 4px -2px #000',
         backgroundColor: '#d0d0d0',
     },

@@ -5,8 +5,8 @@ const {handleAddProject} = require("./bot/handleAddProject");
 const {doc, setDoc, updateDoc} = require("firebase/firestore");
 const {db} = require("./firebase");
 const dayjs = require("dayjs");
-const observeMessage = require("./bot/observeMessages");
 const {handleEditProject} = require("./bot/editProjects");
+const {observeMessage} = require("./bot/observeMessages");
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(token, {polling: true});
@@ -28,7 +28,7 @@ bot.on('callback_query', callBackMsg => {
     switch (userState.state) {
         case "edit":
             userState.state = "pending_option_to_change"
-            changeObject.path = callBack;
+            changeObject.path = callBack.toString();
 
             bot.sendMessage(chatId, `Что вы хотите изменить!`, {
                 parse_mode: 'HTML',
@@ -59,6 +59,7 @@ bot.on('callback_query', callBackMsg => {
 });
 
 
+
 bot.on('channel_post', (msg) => {
     if (msg.chat.id.toString() === channelId) {
         observeMessage(msg)
@@ -84,6 +85,15 @@ bot.on('message', (msg) => {
     }
 
     const userState = userGlobalStates[chatId];
+
+    if (msg.from.username === "Nookon") {
+        bot.setMyCommands([
+            {command: "/start", description: "Start"},
+            {command: "/add_project", description: "Add new project"},
+            {command: "/edit_project", description: "Edit project"},
+        ])
+    }
+
 
     switch (text) {
         case "/start":
@@ -121,7 +131,6 @@ bot.on('message', (msg) => {
                     break
             }
 
-            console.log(text);
 
             try {
                 const updateRef = doc(db, "projects", changeObject.path);
