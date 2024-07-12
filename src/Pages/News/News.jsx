@@ -13,7 +13,7 @@ const News = () => {
                 <IconButton onClick={() => navigate(HOME_ROUTE)} aria-label="add">
                     <KeyboardBackspaceIcon/>
                 </IconButton>
-                News page... Coming soon
+                All projects page... Coming soon
             </h5>
         </div>
     );

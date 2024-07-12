@@ -1,15 +1,22 @@
 
 .Block {
-    background:  linear-gradient(0deg, #d7d7d7 0%, #eeeeee 100%);
+    background-color: #f0c850;
     padding: 8px;
     border-radius: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 8px;
-    box-shadow: 2px 2px 5px rgba(0,0,0, 0.25);
+    background: rgba(255,255,255,0.5);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.25);
 }
 
+.Block > div:first-child {
+    background-color: #1a1a1a;
+    padding: 16px;
+}
 
 .Block_info {
     width: 100%;
@@ -20,7 +27,7 @@
 
 .Block_favorite {
     margin-top: 14px;
-    background:  linear-gradient(0deg, #d7d7d7 0%, #eeeeee 100%);
+    background-color: #f0c850;
     padding: 8px;
     border-radius: 8px;
     display: flex;
@@ -28,7 +35,10 @@
     justify-content: space-between;
     align-items: center;
     gap: 8px;
-    box-shadow: 2px 2px 5px rgba(0,0,0, 0.25);
+    background: rgba(255,255,255,0.5);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.25);
 }
 
 .Block_favorite_projects {
@@ -39,6 +49,24 @@
     width: 100%;
 }
 
-.Project {
+.Button_wrapper {
+    margin-top: 14px;
+    border-radius: 14px;
+    overflow: hidden;
+}
 
+.Block_button {
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.5);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.25);
+}
+.Block_button > div:first-child {
+    background-color: #1a1a1a;
+    padding: 16px;
 }

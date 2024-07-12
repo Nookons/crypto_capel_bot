@@ -1,0 +1,24 @@
+
+.Favorite_item {
+    width: 100%;
+    border: 1px solid #1a1a1a;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: 3px 3px 0 rgba(0,0,0, 0.85);
+    margin-bottom: 8px;
+}
+
+.Favorite_item_info_wrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.Favorite_item_info{
+    width: 100%;
+    display: grid;
+   grid-template-columns: 1fr 0.25fr;
+}

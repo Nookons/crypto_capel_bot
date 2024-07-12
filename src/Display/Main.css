@@ -3,7 +3,8 @@
     max-width: 100%;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
-    gap: 4px;
+    gap: 8px;
+    margin-top: 8px;
     margin-bottom: 56px;
 }
 .snackbar {
@@ -35,6 +36,7 @@
     border-radius: 4px;
     max-width: 100%;
     height: 100px;
+    box-shadow: 4px 4px 0 rgba(0,0,0, 0.85);
     background-repeat: no-repeat !important;
     background-position: center !important;
     background-size: cover !important;

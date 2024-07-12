@@ -7,7 +7,10 @@ const {db} = require("./firebase");
 const dayjs = require("dayjs");
 const {handleEditProject} = require("./bot/editProjects");
 const {observeMessage} = require("./bot/observeMessages");
+<<<<<<< HEAD
 const {editProjects} = require("./bot/EditProjects/Edit");
+=======
+>>>>>>> f9dd5fa0a1791ad7913901e143c25df50cacdd5c
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 
@@ -25,8 +28,43 @@ bot.on('callback_query', callBackMsg => {
 
     const userState = userGlobalStates[chatId]
 
+<<<<<<< HEAD
     editProjects(userState, callBack)
+=======
+    switch (userState.state) {
+        case "edit":
+            userState.state = "pending_option_to_change"
+            changeObject.path = callBack.toString();
+
+            bot.sendMessage(chatId, `Что вы хотите изменить!`, {
+                parse_mode: 'HTML',
+                reply_markup: {
+                    inline_keyboard: [
+                        [{text: 'Название', callback_data: 'name'}, {text: 'Описание', callback_data: 'description'}],
+                        [{text: 'Реф ссылку', callback_data: 'ref_link'}]
+                    ]
+                }
+            });
+            break
+        case "pending_option_to_change":
+            userState.state = "pending_user_change"
+            changeObject.updateType = callBack;
+            bot.sendMessage(chatId, `Отправь мне новые данные и я их изменню`);
+            break
+        default:
+            bot.sendMessage(chatId, `Что-то пошло не так, обратитесь к Димке!`);
+            break
+    }
+
+    if (userState.state === "edit") {
+        userState.state = "pending_option_to_change"
+        userState.id = callBack;
+
+
+    }
+>>>>>>> f9dd5fa0a1791ad7913901e143c25df50cacdd5c
 });
+
 
 
 bot.on('channel_post', (msg) => {
@@ -54,6 +92,15 @@ bot.on('message', (msg) => {
     }
 
     const userState = userGlobalStates[chatId];
+
+    if (msg.from.username === "Nookon") {
+        bot.setMyCommands([
+            {command: "/start", description: "Start"},
+            {command: "/add_project", description: "Add new project"},
+            {command: "/edit_project", description: "Edit project"},
+        ])
+    }
+
 
     switch (text) {
         case "/start":
@@ -91,7 +138,6 @@ bot.on('message', (msg) => {
                     break
             }
 
-            console.log(text);
 
             try {
                 const updateRef = doc(db, "projects", changeObject.id);

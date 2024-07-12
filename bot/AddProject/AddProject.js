@@ -30,29 +30,23 @@ const addProject = async (bot, msg, userGlobalStates) => {
 
             const fileUrl = `https://api.telegram.org/file/bot${bot.token}/${filePath}`;
 
+            userState.project.imgPath = fileUrl;
+            userState.project.fileId = fileId;
+
+            const template = {
+                id: Date.now(),
+                likes: 0,
+                userLiked: [],
+                createdTime: dayjs().format("YYYY-MM-DD HH:mm"),
+                updatedTime: dayjs().format("YYYY-MM-DD HH:mm"),
+                ...userState.project
+            }
+
             try {
-                const response = await fetch(fileUrl);
-                const blob = await response.blob();
-
-                const storageRef = ref(storage, `projects/${fileId}.jpg`);
-                await uploadBytes(storageRef, blob);
-                const downloadURL = await getDownloadURL(storageRef);
-
-                userState.project.imgPath = downloadURL;
-                userState.project.fileId = fileId;
-
-                const template = {
-                    id: Date.now(),
-                    likes: 0,
-                    tags: [],
-                    userLiked: [],
-                    createdTime: dayjs().format("YYYY-MM-DD HH:mm"),
-                    updatedTime: dayjs().format("YYYY-MM-DD HH:mm"),
-                    ...userState.project
-                };
-
                 const userDocRef = doc(db, "projects", template.id.toString());
-                await setDoc(userDocRef, template);
+                await setDoc(userDocRef, {
+                    ...template
+                });
 
                 await bot.sendMessage(chatId, `Проект успешно добавлен!`);
             } catch (error) {
