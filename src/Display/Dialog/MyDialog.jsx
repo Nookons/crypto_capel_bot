@@ -33,6 +33,7 @@ const MyDialog = ({dialog, setDialog}) => {
             const isFavorite = user.favorite.includes(currentItem.id);
             const isLiked = currentItem.userLiked.includes(user.id);
 
+
             setIsFavorite(isFavorite);
             setIsLiked(isLiked)
         }

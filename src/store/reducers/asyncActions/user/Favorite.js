@@ -23,6 +23,6 @@ export const removeFromFavorite = ({id, user}) => {
             favorite: user.favorite.filter(item => item !== id)
         });
 
-        dispatch(removeFromFavoriteAction(id)); // Диспетчеризация действия для удаления избранного элемента
+        dispatch(removeFromFavoriteAction(id));
     };
 };

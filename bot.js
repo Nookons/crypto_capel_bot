@@ -35,7 +35,7 @@ bot.on('callback_query', callBackMsg => {
 // Observe messages in a specific channel
 bot.on('channel_post', (msg) => {
     if (msg.chat.id.toString() === channelId) {
-        observeMessage(msg);
+        observeMessage(msg, bot);
     }
 });
 

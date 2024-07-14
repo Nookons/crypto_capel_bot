@@ -34,7 +34,6 @@ const addProject = async (bot, msg, userGlobalStates) => {
 
         const fileUrl = `https://api.telegram.org/file/bot${bot.token}/${filePath}`;
 
-        // Получение данных файла и загрузка в Firebase Storage
         const response = await fetch(fileUrl);
         const arrayBuffer = await response.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
@@ -51,7 +50,7 @@ const addProject = async (bot, msg, userGlobalStates) => {
 
             // Сохранение данных проекта в Firestore
             const template = {
-                id: Date.now().toString(), // Используем строку для идентификатора
+                id: Date.now(),
                 createdAt: dayjs().format('DD/MM/YYYY'),
                 userLiked: [],
                 likes: 0,
@@ -92,7 +91,7 @@ const addProject = async (bot, msg, userGlobalStates) => {
             case 'awaiting_project_link':
                 userState.project.link = text;
                 userState.localState = 'awaiting_project_type';
-                await bot.sendMessage(chatId, `Реферальная ссылка проекта сохранена. Теперь отправьте тип проекта (например, altcoin / Token / stablecoin / NFT / DEFI).`);
+                await bot.sendMessage(chatId, `Реферальная ссылка проекта сохранена. Теперь отправьте тип проекта (пример строки, altcoin | token | stablecoin | NFT | DEFI).`);
                 break;
 
             case 'awaiting_project_type':

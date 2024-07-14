@@ -6,9 +6,9 @@ import {addLikeAction, removeLikeAction} from "../../projectsReducer";
 export const addUserLike = ({data, user}) => {
     return async function (dispatch) {
         const id = data.id;
-        const ref = doc(db, "projects", id);
+        const ref = doc(db, "projects", id.toString());
 
-        await setDoc(ref, {...data, likes: data.likes + 1, userLiked: [...data.userLiked, id]});
+        await setDoc(ref, {...data, likes: data.likes + 1, userLiked: [...data.userLiked, user.id]});
 
         dispatch(addLikeAction(id))
     }
@@ -17,7 +17,7 @@ export const addUserLike = ({data, user}) => {
 export const removeUserLike = ({data, user}) => {
     return async function (dispatch) {
         const id = data.id;
-        const ref = doc(db, "projects", data.id);
+        const ref = doc(db, "projects", id.toString());
 
         await updateDoc(ref, {
             userLiked: data.userLiked.filter(item => item !== user.id),
@@ -27,3 +27,4 @@ export const removeUserLike = ({data, user}) => {
         dispatch(removeLikeAction(id)); // Диспетчеризация действия для удаления избранного элемента
     };
 };
+
