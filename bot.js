@@ -1,85 +1,53 @@
 require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
-const {handleStart} = require("./bot/handleStart");
-const {handleAddProject} = require("./bot/AddProject/AddProject");
-const {doc, setDoc, updateDoc} = require("firebase/firestore");
-const {db} = require("./firebase");
-const dayjs = require("dayjs");
-const {handleEditProject} = require("./bot/editProjects");
-const {observeMessage} = require("./bot/observeMessages");
-<<<<<<< HEAD
-const {editProjects} = require("./bot/EditProjects/Edit");
-=======
->>>>>>> f9dd5fa0a1791ad7913901e143c25df50cacdd5c
+const { handleStart } = require("./bot/handleStart");
+const { handleAddProject, addProject} = require("./bot/AddProject/AddProject");
+const { doc, updateDoc } = require("firebase/firestore");
+const { db } = require("./firebase");
+const { handleEditProject } = require("./bot/editProjects");
+const { observeMessage } = require("./bot/observeMessages");
+const { editProjects } = require("./bot/EditProjects/Edit");
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
+const bot = new TelegramBot(token, { polling: true });
 
-const bot = new TelegramBot(token, {polling: true});
+const userGlobalStates = {};
+const channelId = '-1002243510504';
 
-const userGlobalStates  = {};
-const changeObject      = {};
-const channelId      = '-1002243510504';
-
-
+// Handle callback queries
 bot.on('callback_query', callBackMsg => {
     const msg = callBackMsg.message;
     const chatId = msg.chat.id;
     const callBack = callBackMsg.data;
 
-    const userState = userGlobalStates[chatId]
-
-<<<<<<< HEAD
-    editProjects(userState, callBack)
-=======
-    switch (userState.state) {
-        case "edit":
-            userState.state = "pending_option_to_change"
-            changeObject.path = callBack.toString();
-
-            bot.sendMessage(chatId, `Что вы хотите изменить!`, {
-                parse_mode: 'HTML',
-                reply_markup: {
-                    inline_keyboard: [
-                        [{text: 'Название', callback_data: 'name'}, {text: 'Описание', callback_data: 'description'}],
-                        [{text: 'Реф ссылку', callback_data: 'ref_link'}]
-                    ]
-                }
-            });
-            break
-        case "pending_option_to_change":
-            userState.state = "pending_user_change"
-            changeObject.updateType = callBack;
-            bot.sendMessage(chatId, `Отправь мне новые данные и я их изменню`);
-            break
-        default:
-            bot.sendMessage(chatId, `Что-то пошло не так, обратитесь к Димке!`);
-            break
+    if (!userGlobalStates[chatId]) {
+        userGlobalStates[chatId] = {
+            state: "",
+            objectToChange: {},
+            chatId: chatId
+        };
     }
 
-    if (userState.state === "edit") {
-        userState.state = "pending_option_to_change"
-        userState.id = callBack;
-
-
-    }
->>>>>>> f9dd5fa0a1791ad7913901e143c25df50cacdd5c
+    const userState = userGlobalStates[chatId];
+    editProjects(bot, userState, callBack);
 });
 
-
-
+// Observe messages in a specific channel
 bot.on('channel_post', (msg) => {
     if (msg.chat.id.toString() === channelId) {
-        observeMessage(msg)
+        observeMessage(msg);
     }
 });
 
-
+// Handle photo messages
 bot.on('photo', (msg) => {
-    if (userGlobalStates.state === "add") {
+    const chatId = msg.chat.id;
+    if (userGlobalStates[chatId]?.state === "add") {
         handleAddProject(bot, msg, userGlobalStates);
     }
-})
+});
 
+// Handle text messages
 bot.on('message', (msg) => {
     const chatId = msg.chat.id;
     const userId = msg.from.id;
@@ -87,7 +55,10 @@ bot.on('message', (msg) => {
 
     if (!userGlobalStates[chatId]) {
         userGlobalStates[chatId] = {
-            state: ""
+            state: "",
+            objectToChange: {},
+            project: {},
+            chatId: chatId
         };
     }
 
@@ -95,12 +66,11 @@ bot.on('message', (msg) => {
 
     if (msg.from.username === "Nookon") {
         bot.setMyCommands([
-            {command: "/start", description: "Start"},
-            {command: "/add_project", description: "Add new project"},
-            {command: "/edit_project", description: "Edit project"},
-        ])
+            { command: "/start", description: "Start" },
+            { command: "/add_project", description: "Add new project" },
+            { command: "/edit_project", description: "Edit project" },
+        ]);
     }
-
 
     switch (text) {
         case "/start":
@@ -109,6 +79,7 @@ bot.on('message', (msg) => {
             break;
         case "/add_project":
             userState.state = 'add';
+            userState.localState = 'start';
             break;
         case "/edit_project":
             userState.state = 'edit';
@@ -117,42 +88,50 @@ bot.on('message', (msg) => {
 
     switch (userState.state) {
         case "add":
-            handleAddProject(bot, msg, userGlobalStates);
+            addProject(bot, msg, userGlobalStates);
             break;
         case "edit":
             handleEditProject(bot, msg, userGlobalStates);
             break;
-
         case "pending_user_change":
-            userState.state = ""
-
-            switch (changeObject.updateType) {
-                case "name":
-                    changeObject.name = text
-                    break
-                case "description":
-                    changeObject.description = text
-                    break
-                case "ref_link":
-                    changeObject.link = text
-                    break
-            }
-
-
-            try {
-                const updateRef = doc(db, "projects", changeObject.id);
-
-                console.log(updateRef);
-
-                updateDoc(updateRef, {
-                    ...changeObject
-                });
-            } catch (err) {
-                console.log(err);
-            }
-            break
+            handlePendingUserChange(userState, text, bot, chatId);
+            break;
     }
 });
+
+// Handle pending user changes
+async function handlePendingUserChange(userState, newText, bot, chatId) {
+    userState.state = "";
+
+    switch (userState.objectToChange.updateType) {
+        case "name":
+            userState.objectToChange.name = newText;
+            break;
+        case "description":
+            userState.objectToChange.description = newText;
+            break;
+        case "ref_link":
+            userState.objectToChange.link = newText;
+            break;
+    }
+
+    try {
+        const updateRef = doc(db, "projects", userState.objectToChange.id);
+        console.log(updateRef);
+
+        await updateDoc(updateRef, {
+            ...userState.objectToChange
+        });
+
+        await bot.sendMessage(chatId, `Данные были успешно сохранены`);
+        userState.objectToChange = {};
+
+    } catch (err) {
+        console.error(err);
+        await bot.sendMessage(chatId, `Произошла ошибка: ${err.toString()}. Пожалуйста, попробуйте снова.`);
+        userState.objectToChange = {};
+    }
+}
 
 module.exports = {
     userGlobalStates
