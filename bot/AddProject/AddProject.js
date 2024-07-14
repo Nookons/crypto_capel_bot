@@ -1,7 +1,7 @@
 const dayjs = require('dayjs');
 const { ref, uploadBytes, getDownloadURL } = require('firebase/storage');
-const { storage, db } = require('../../firebase');
-const { setDoc, doc } = require('firebase/firestore');
+const {storage, db} = require("../../firebase");
+const {doc, setDoc} = require("firebase/firestore");
 
 const addProject = async (bot, msg, userGlobalStates) => {
     const chatId = msg.chat.id;
@@ -38,7 +38,7 @@ const addProject = async (bot, msg, userGlobalStates) => {
         const arrayBuffer = await response.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
-        const storageRef = ref(storage, `projects/img/${fileId}.jpg`);
+        const storageRef = ref(storage, `projects/img/${fileId.toString()}.jpg`);
 
         try {
             // Очистка состояния пользователя после успешной загрузки
@@ -59,7 +59,7 @@ const addProject = async (bot, msg, userGlobalStates) => {
                 fileId: fileId // Сохраняем идентификатор файла
             };
 
-            await setDoc(doc(db, 'projects', template.id), {
+            await setDoc(doc(db, 'projects', template.id.toString()), {
                 ...template
             });
 

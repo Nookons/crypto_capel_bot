@@ -57,7 +57,7 @@ const Main = () => {
             {sorted
                 ?
                 <div className={"Display"}>
-                    {sorted.slice(0, 15).map((el, index) => {
+                    {sorted.map((el, index) => {
 
                         return (
                             <div
