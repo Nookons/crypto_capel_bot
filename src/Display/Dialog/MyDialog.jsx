@@ -128,12 +128,12 @@ const MyDialog = ({dialog, setDialog}) => {
                         ?   <Chip onClick={onAddLike} clickable icon={<FavoriteBorderIcon />} label={<p>{currentItem?.likes.toLocaleString()}</p>} />
                         :   <Chip onClick={onRemoveLike} clickable icon={<FavoriteIcon sx={{color: "red !important"}} />} label={<p>{currentItem?.likes.toLocaleString()}</p>} />
                     }
-                    <Chip icon={<FaceIcon />} label={<p>Altocin</p>} />
+                    <Chip icon={<FaceIcon />} label={<p>Altocoin</p>} />
                     <Chip icon={<FaceIcon />} label={<p>Token</p>} />
                 </Box>
                 <p>{currentItem?.description}</p>
                 <Divider sx={{my: 2}}/>
-                <CommentInput />
+                <CommentInput currentItem={currentItem}/>
                 <Divider sx={{my: 2}}/>
                 <DialogComments currentItem={currentItem}/>
             </List>
