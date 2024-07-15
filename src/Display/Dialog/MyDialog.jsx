@@ -118,7 +118,7 @@ const MyDialog = ({dialog, setDialog}) => {
                             ?   <MyButton click={onAddFavorite}><BookmarkAddIcon/></MyButton>
                             :   <MyButton click={onRemoveFromFavorite}><BookmarkRemoveIcon/></MyButton>
                         }
-                        <MyButton><PlayCircleFilledIcon /></MyButton>
+                        <MyButton click={onStartClick}><PlayCircleFilledIcon /></MyButton>
                     </Box>
                 </Toolbar>
             </AppBar>
