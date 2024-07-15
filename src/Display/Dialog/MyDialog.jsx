@@ -1,12 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {
-    Avatar,
+    AppBar,
+    Avatar, Box, Chip,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle, IconButton,
-    Skeleton
+    Skeleton, Slide, Toolbar
 } from "@mui/material";
+import Button from '@mui/material/Button';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemButton from '@mui/material/ListItemButton';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
+import CloseIcon from '@mui/icons-material/Close';
+
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -17,6 +26,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {addToFavorite, removeFromFavorite} from "../../store/reducers/asyncActions/user/Favorite";
 import {addUserLike, removeUserLike} from "../../store/reducers/asyncActions/project/Likes";
 import AddCommentIcon from '@mui/icons-material/AddComment';
+import MyButton from "../../components/MyButton";
+import DialogComments from "./DialogComments";
+import CommentInput from "./CommentInput";
+import FaceIcon from '@mui/icons-material/Face';
+
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const MyDialog = ({dialog, setDialog}) => {
     const user = useSelector(state => state.user)
@@ -33,6 +51,7 @@ const MyDialog = ({dialog, setDialog}) => {
             const isFavorite = user.favorite.includes(currentItem.id);
             const isLiked = currentItem.userLiked.includes(user.id);
 
+            console.log(isLiked);
 
             setIsFavorite(isFavorite);
             setIsLiked(isLiked)
@@ -78,62 +97,46 @@ const MyDialog = ({dialog, setDialog}) => {
 
     return (
         <Dialog
+            fullScreen
             open={dialog.isOpen}
             onClose={onClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-            maxWidth={"xs"}>
-            <DialogTitle id="alert-dialog-title">
-                <p style={{color: "gray", display: "flex", alignItems: "center", gap: 6}}><ThumbUpIcon
-                    sx={{fontSize: 14}}/> {currentItem ? currentItem?.likes.toLocaleString() : 0}</p>
-
-                {currentItem
-                    ? <Avatar src={currentItem?.imgPath} variant={"rounded"}
-                              sx={{width: "100%", height: 125, my: 2}}>N</Avatar>
-                    : <Skeleton variant="rectangular" width={"100%"} height={125}/>
-                }
-                {currentItem ? <h4>{currentItem.name} </h4> : <Skeleton variant="text"/>}
-            </DialogTitle>
-            <DialogContent>
-                {currentItem ? <p>{currentItem.description}</p> :
-                    <Skeleton variant="rectangular" width={250} height={150}/>}
-            </DialogContent>
-            <DialogActions>
-                {
-                    isLiked
-                        ?
-                        <IconButton onClick={onRemoveLike} aria-label="remove">
-                            <FavoriteIcon sx={{fontSize: 24, color: "#67bfff"}}/>
-                        </IconButton>
-                        :
-                        <IconButton onClick={onAddLike} aria-label="add">
-                            <FavoriteBorderIcon sx={{fontSize: 24}}/>
-                        </IconButton>
-                }
-                {
-                    isFavorite
-                        ?
-                        <IconButton onClick={onRemoveFromFavorite} aria-label="remove">
-                            <BookmarkRemoveIcon sx={{fontSize: 24, color: "#67bfff"}}/>
-                        </IconButton>
-                        :
-                        <IconButton onClick={onAddFavorite} aria-label="add">
-                            <BookmarkAddIcon sx={{fontSize: 24}}/>
-                        </IconButton>
-                }
-
-                <IconButton onClick={() => alert("coming soon... 🙈")} aria-label="add">
-                    <AddCommentIcon sx={{fontSize: 24}}/>
-                </IconButton>
-
-                {currentItem
-                    ?
-                    <IconButton sx={{color: "green"}} onClick={onStartClick} aria-label="add">
-                        <PlayCircleFilledIcon sx={{fontSize: 44}}/>
+            TransitionComponent={Transition}
+        >
+            <AppBar sx={{ position: 'relative', background: `url(${currentItem?.imgPath})`, backgroundSize: "cover"}}>
+                <Toolbar sx={{gap: 2, justifyContent: "space-between"}}>
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        onClick={onClose}
+                        aria-label="close"
+                        sx={{backgroundColor: "rgba(0,0,0, 0.25)", backdropFilter: "blur(3px)"}}
+                    >
+                        <CloseIcon/>
                     </IconButton>
-                    : <Skeleton variant="rectangular" width={95} height={25}/>
-                }
-            </DialogActions>
+                    <Box sx={{display: "flex", gap: 1}}>
+                        {!isFavorite
+                            ?   <MyButton click={onAddFavorite}><BookmarkAddIcon/></MyButton>
+                            :   <MyButton click={onRemoveFromFavorite}><BookmarkRemoveIcon/></MyButton>
+                        }
+                        <MyButton><PlayCircleFilledIcon /></MyButton>
+                    </Box>
+                </Toolbar>
+            </AppBar>
+            <List sx={{p: 1}}>
+                <Box sx={{display: "flex",gap: 1, my: 2}}>
+                    {!isLiked
+                        ?   <Chip onClick={onAddLike} clickable icon={<FavoriteBorderIcon />} label={<p>{currentItem?.likes.toLocaleString()}</p>} />
+                        :   <Chip onClick={onRemoveLike} clickable icon={<FavoriteIcon sx={{color: "red !important"}} />} label={<p>{currentItem?.likes.toLocaleString()}</p>} />
+                    }
+                    <Chip icon={<FaceIcon />} label={<p>Altocin</p>} />
+                    <Chip icon={<FaceIcon />} label={<p>Token</p>} />
+                </Box>
+                <p>{currentItem?.description}</p>
+                <Divider sx={{my: 2}}/>
+                <CommentInput />
+                <Divider sx={{my: 2}}/>
+                <DialogComments currentItem={currentItem}/>
+            </List>
         </Dialog>
     )
 };

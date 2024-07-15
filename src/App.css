@@ -30,5 +30,6 @@ p { font-size: clamp(12px, .8vw, 21px) !important;}
 
 
 body {
-  background-color: #f0a078;
+  background-image: linear-gradient(to top, #6a85b6 0%, #bac8e0 100%);
+  min-height: calc(100vh);
 }
