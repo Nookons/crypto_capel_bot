@@ -51,8 +51,6 @@ const MyDialog = ({dialog, setDialog}) => {
             const isFavorite = user.favorite.includes(currentItem.id);
             const isLiked = currentItem.userLiked.includes(user.id);
 
-            console.log(isLiked);
-
             setIsFavorite(isFavorite);
             setIsLiked(isLiked)
         }
@@ -128,7 +126,7 @@ const MyDialog = ({dialog, setDialog}) => {
                         ?   <Chip onClick={onAddLike} clickable icon={<FavoriteBorderIcon />} label={<p>{currentItem?.likes.toLocaleString()}</p>} />
                         :   <Chip onClick={onRemoveLike} clickable icon={<FavoriteIcon sx={{color: "red !important"}} />} label={<p>{currentItem?.likes.toLocaleString()}</p>} />
                     }
-                    <Chip icon={<FaceIcon />} label={<p>Altocoin</p>} />
+                    <Chip icon={<FaceIcon />} label={<p>Altcoin</p>} />
                     <Chip icon={<FaceIcon />} label={<p>Token</p>} />
                 </Box>
                 <p>{currentItem?.description}</p>

@@ -9,7 +9,11 @@ const CommentInput = ({currentItem}) => {
     const [value, setValue] = useState("");
 
     const onAddComment = async () => {
-        const response = await addComment({user, value, currentItem});
+        if (value.length) {
+            const response = await addComment({user, value, currentItem});
+        } else {
+            alert("Вы не можете оправлять пустой коментарий")
+        }
     }
 
     return (
