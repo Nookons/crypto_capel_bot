@@ -1,22 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {
     AppBar,
-    Avatar, Box, Chip,
+    Box, Button, Chip,
     Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle, IconButton,
-    Skeleton, Slide, Toolbar
+    IconButton,
+    Slide, Toolbar
 } from "@mui/material";
-import Button from '@mui/material/Button';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemButton from '@mui/material/ListItemButton';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
@@ -25,11 +18,12 @@ import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import {useDispatch, useSelector} from "react-redux";
 import {addToFavorite, removeFromFavorite} from "../../store/reducers/asyncActions/user/Favorite";
 import {addUserLike, removeUserLike} from "../../store/reducers/asyncActions/project/Likes";
-import AddCommentIcon from '@mui/icons-material/AddComment';
 import MyButton from "../../components/MyButton";
-import DialogComments from "./DialogComments";
-import CommentInput from "./CommentInput";
 import FaceIcon from '@mui/icons-material/Face';
+import CommentInput from "./comments/CommentInput";
+import DialogComments from "./comments/DialogComments";
+import startClaim from "../../utils/Claim/StartClaim";
+import ProjectClaim from "./Claim/ProjectClaim";
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -43,6 +37,7 @@ const MyDialog = ({dialog, setDialog}) => {
 
     const [isFavorite, setIsFavorite]   = useState(false);
     const [isLiked, setIsLiked]         = useState(false);
+
 
     const [currentItem, setCurrentItem] = useState(null);
 
@@ -129,10 +124,11 @@ const MyDialog = ({dialog, setDialog}) => {
                     <Chip icon={<FaceIcon />} label={<p>Altcoin</p>} />
                     <Chip icon={<FaceIcon />} label={<p>Token</p>} />
                 </Box>
+                <ProjectClaim currentItem={currentItem} user={user}/>
+                <Divider sx={{my: 1}}/>
                 <p>{currentItem?.description}</p>
-                <Divider sx={{my: 2}}/>
+                <Divider sx={{my: 1}}/>
                 <CommentInput currentItem={currentItem}/>
-                <Divider sx={{my: 2}}/>
                 <DialogComments currentItem={currentItem}/>
             </List>
         </Dialog>

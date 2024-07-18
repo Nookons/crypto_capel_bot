@@ -1,18 +1,57 @@
 require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
-const { handleStart } = require("./bot/handleStart");
-const { handleAddProject, addProject} = require("./bot/AddProject/AddProject");
-const { doc, updateDoc } = require("firebase/firestore");
-const { db } = require("./firebase");
-const { handleEditProject } = require("./bot/editProjects");
-const { observeMessage } = require("./bot/observeMessages");
-const { editProjects } = require("./bot/EditProjects/Edit");
+const {handleStart} = require("./bot/handleStart");
+const {handleAddProject, addProject} = require("./bot/AddProject/AddProject");
+const {doc, updateDoc, query, collection, onSnapshot, getDoc, arrayUnion} = require("firebase/firestore");
+const {db} = require("./firebase");
+const {handleEditProject} = require("./bot/editProjects");
+const {observeMessage} = require("./bot/observeMessages");
+const {editProjects} = require("./bot/EditProjects/Edit");
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
-const bot = new TelegramBot(token, { polling: true });
+const bot = new TelegramBot(token, {polling: true});
 
 const userGlobalStates = {};
 const channelId = '-1002243510504';
+
+const removeNeed = async ({ project, user }) => {
+    const userRef = doc(db, "users", "user_" + user.id);
+    const newArray = user.needClaim.filter(item => item !== project.id);  // Filter out the project.id
+
+    await updateDoc(userRef, { needClaim: newArray });
+}
+
+
+const setupRealTimeListeners = (bot) => {
+    const q = query(collection(db, "users"));
+
+    const unsubscribe = onSnapshot(q, async (querySnapshot) => {
+        for (const userDoc of querySnapshot.docs) {
+            if (userDoc.exists()) {
+                const user = userDoc.data();
+                const needArr = user.claim_waiting;
+
+                if (needArr) {
+                    for (const need of needArr) {
+                        const projRef = doc(db, "projects", need.toString());
+                        const docSnap = await getDoc(projRef);
+
+                        if (docSnap.exists()) {
+                            const project = docSnap.data();
+                            await bot.sendPhoto(user.id, project.imgPath ,{caption: `Привет, пришло время забрать монети в ${project.name}`});
+                            await removeNeed({project, user})
+                        } else {
+                            // docSnap.data() will be undefined in this case
+                            console.log("No such document!");
+                        }
+                    }
+                }
+            }
+        }
+    });
+};
+
+setupRealTimeListeners(bot);
 
 // Handle callback queries
 bot.on('callback_query', callBackMsg => {
@@ -66,9 +105,9 @@ bot.on('message', (msg) => {
 
     if (msg.from.username === "Nookon") {
         bot.setMyCommands([
-            { command: "/start", description: "Start" },
-            { command: "/add_project", description: "Add new project" },
-            { command: "/edit_project", description: "Edit project" },
+            {command: "/start", description: "Start"},
+            {command: "/add_project", description: "Add new project"},
+            {command: "/edit_project", description: "Edit project"},
         ]);
     }
 

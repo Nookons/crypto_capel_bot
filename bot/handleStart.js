@@ -1,6 +1,7 @@
 const dayjs = require("dayjs");
-const { collection, query, getDocs } = require("firebase/firestore");
+const {  updateDoc, doc} = require("firebase/firestore");
 const { getFirestore } = require("firebase/firestore");
+const {db} = require("../firebase");
 
 const userStates = {};
 
@@ -13,9 +14,22 @@ const handleStart = async (bot, msg) => {
         userStates[chatId] = {};
     }
 
+    console.log(chatId);
+
     switch (text) {
         case "/start":
             userStates[userId].state = 'default';
+
+            try {
+                const ref = doc(db, "users", "user_" + userId);
+
+                await updateDoc(ref, {
+                    chatId: chatId
+                });
+            } catch (err) {
+                console.log(err);
+            }
+
             await bot.sendMessage(chatId, `Hello, ${msg.from.username}!`, {
                 parse_mode: 'HTML',
                 reply_markup: {
