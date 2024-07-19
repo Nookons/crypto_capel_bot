@@ -1,21 +1,32 @@
 import React from 'react';
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import startClaim from "../../utils/Claim/StartClaim";
+import {useSelector} from "react-redux";
 
 const ClaimWindow = ({open, setOpen}) => {
+    const user = useSelector((state) => state.user)
 
     const onClose = () => {
-        setOpen(false);
+        setOpen({
+            isOpen: false,
+            currentItem: {}
+        });
+    }
+
+    const onStartClaim = async () => {
+        const currentItem = open.currentItem
+        const response = await startClaim({currentItem, user})
     }
 
     return (
         <Dialog
-            open={open}
+            open={open.isOpen}
             onClose={onClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
             <DialogTitle id="alert-dialog-title">
-                {"Начать клейм?"}
+                {`Начать клейм ${open.name}?`}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
@@ -27,8 +38,8 @@ const ClaimWindow = ({open, setOpen}) => {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button>Disagree</Button>
-                <Button autoFocus>Agree</Button>
+                <Button onClick={onClose}>Disagree</Button>
+                <Button onClick={onStartClaim} autoFocus>Agree</Button>
             </DialogActions>
         </Dialog>
     );

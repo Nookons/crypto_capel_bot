@@ -86,7 +86,10 @@ const MyDialog = ({dialog, setDialog, setClaimWindow}) => {
 
     const onStartClick = () => {
         onClose();
-        setClaimWindow(true)
+        setClaimWindow({
+            isOpen: true,
+            currentItem: {...currentItem}
+        })
         window.location.href = currentItem.link
     }
 

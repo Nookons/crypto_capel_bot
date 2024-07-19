@@ -21,7 +21,10 @@ const Main = () => {
 
     const [sorted, setSorted] = useState(null);
 
-    const [claimWindow, setClaimWindow] = useState(false);
+    const [claimWindow, setClaimWindow] = useState({
+        isOpen: false,
+        currentItem: {}
+    });
 
     useEffect(() => {
         if(projects.length) {
