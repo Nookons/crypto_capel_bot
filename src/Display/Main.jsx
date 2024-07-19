@@ -22,7 +22,7 @@ const Main = () => {
     const [sorted, setSorted] = useState(null);
 
     const [claimWindow, setClaimWindow] = useState({
-        isOpen: false,
+        isOpen: true,
         currentItem: {}
     });
 

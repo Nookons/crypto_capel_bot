@@ -5,7 +5,8 @@ import removeClaim from "./RemoveClaim";
 
 const startClaim = async ({ currentItem, user }) => {
     if (currentItem.isClaim) {
-        removeClaim(currentItem.id, user)
+        const id = currentItem.id
+        removeClaim({id, user})
         const userRef = doc(db, "users", "user_" + user.id);
         const timestamp = dayjs().valueOf();  // Current timestamp in milliseconds
 
