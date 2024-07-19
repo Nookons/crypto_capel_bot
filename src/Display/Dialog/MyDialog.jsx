@@ -31,15 +31,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const MyDialog = ({dialog, setDialog}) => {
+const MyDialog = ({dialog, setDialog, setClaimWindow}) => {
     const user = useSelector(state => state.user)
     const projects = useSelector(state => state.projects)
     const dispatch = useDispatch();
 
     const [isFavorite, setIsFavorite]   = useState(false);
     const [isLiked, setIsLiked]         = useState(false);
-
-    const [claimWindow, setClaimWindow] = useState(false);
 
 
     const [currentItem, setCurrentItem] = useState(null);
@@ -99,7 +97,6 @@ const MyDialog = ({dialog, setDialog}) => {
             onClose={onClose}
             TransitionComponent={Transition}
         >
-            <ClaimWindow open={claimWindow} setOpen={setClaimWindow} />
             <AppBar sx={{ position: 'relative', background: `url(${currentItem?.imgPath})`, backgroundSize: "cover"}}>
                 <Toolbar sx={{gap: 2, justifyContent: "space-between"}}>
                     <IconButton

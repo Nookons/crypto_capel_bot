@@ -21,6 +21,8 @@ const Main = () => {
 
     const [sorted, setSorted] = useState(null);
 
+    const [claimWindow, setClaimWindow] = useState(false);
+
     useEffect(() => {
         if(projects.length) {
             const sorted = projects.sort((a, b) => b.likes - a.likes);
@@ -46,7 +48,8 @@ const Main = () => {
 
     return (
         <div className={"container"}>
-            <MyDialog dialog={dialog} setDialog={setDialog}/>
+            <ClaimWindow open={claimWindow} setOpen={setClaimWindow} />
+            <MyDialog dialog={dialog} setDialog={setDialog} setClaimWindow={setClaimWindow}/>
             <div style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
