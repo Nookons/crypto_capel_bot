@@ -31,8 +31,8 @@ const ProjectClaim = ({ currentItem, user }) => {
     }, [user.id]);
 
     useEffect(() => {
-        if (userDb && userDb.claim_waiting) {
-            userDb.claim_waiting.forEach(el => {
+        if (userDb && userDb.claim) {
+            userDb.claim.forEach(el => {
                 if (el?.id === currentItem?.id) {
                     const endClaim = dayjs(el.endClaim);
                     const startClaim = dayjs(el.startClaim);
@@ -46,8 +46,8 @@ const ProjectClaim = ({ currentItem, user }) => {
                         project: el.project,
                         startClaim: startClaim.format('YYYY-MM-DD HH:mm:ss'),
                         updateTime: dayjs(el.updateTime).format('YYYY-MM-DD HH:mm:ss'),
-                        remainTime: remainTime > 0 ? remainTime : 0,
-                        totalTime: totalTime
+                        remainTime: !isNaN(remainTime) ? Math.max(remainTime, 0) : 0,
+                        totalTime: !isNaN(totalTime) ? Math.max(totalTime, 0) : 0
                     });
                 }
             });
@@ -61,7 +61,7 @@ const ProjectClaim = ({ currentItem, user }) => {
                 const newRemainTime = dayjs(prevClaimObj.endClaim).diff(dayjs(), 'second');
                 return {
                     ...prevClaimObj,
-                    remainTime: newRemainTime > 0 ? newRemainTime : 0
+                    remainTime: !isNaN(newRemainTime) ? Math.max(newRemainTime, 0) : 0
                 };
             });
         }, 1000);
@@ -75,19 +75,24 @@ const ProjectClaim = ({ currentItem, user }) => {
             if (newSliderValue >= 100) {
                 const id = currentItem.id;
                 setIsNeedClaim(true);
-                removeClaim({id, user}).then(r => console.log("removed"));
+                removeClaim({ id, user }).then(r => console.log("removed"));
             }
         }
     }, [claimObj.remainTime, claimObj.totalTime]);
 
     if (!isNeedClaim && claimObj.isHave) {
+        const sliderValue = (claimObj.totalTime > 0 && !isNaN(claimObj.remainTime)) ?
+            ((claimObj.totalTime - claimObj.remainTime) / claimObj.totalTime * 100) : 0;
+
         return (
             <div>
                 <p>Remaining Time: {dayjs.duration(claimObj.remainTime, 'seconds').humanize()}</p>
-                <IOSSlider value={(claimObj.totalTime - claimObj.remainTime) / claimObj.totalTime * 100}/>
+                <IOSSlider value={sliderValue} />
             </div>
         );
     }
+
+    return null;
 };
 
 export default ProjectClaim;
