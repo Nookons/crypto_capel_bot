@@ -14,8 +14,17 @@ const ClaimWindow = ({open, setOpen}) => {
     }
 
     const onStartClaim = async () => {
-        const currentItem = open.currentItem
-        const response = await startClaim({currentItem, user})
+        try {
+            const currentItem = open.currentItem
+            const response = await startClaim({currentItem, user})
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setOpen({
+                isOpen: false,
+                currentItem: {}
+            });
+        }
     }
 
     return (
@@ -26,7 +35,7 @@ const ClaimWindow = ({open, setOpen}) => {
             aria-describedby="alert-dialog-description"
         >
             <DialogTitle id="alert-dialog-title">
-                {`Начать клейм ${open.name}?`}
+                {`Начать клейм ${open.currentItem.name}?`}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
