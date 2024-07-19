@@ -1,9 +1,11 @@
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import dayjs from "dayjs";
+import removeClaim from "./RemoveClaim";
 
 const startClaim = async ({ currentItem, user }) => {
     if (currentItem.isClaim) {
+        removeClaim(currentItem.id, user)
         const userRef = doc(db, "users", "user_" + user.id);
         const timestamp = dayjs().valueOf();  // Current timestamp in milliseconds
 

@@ -47,8 +47,8 @@ const ClaimWindow = ({open, setOpen}) => {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose}>Disagree</Button>
-                <Button onClick={onStartClaim} autoFocus>Agree</Button>
+                <Button onClick={onClose}>Не зараз</Button>
+                <Button onClick={onStartClaim} autoFocus>Почати</Button>
             </DialogActions>
         </Dialog>
     );
