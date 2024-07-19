@@ -12,6 +12,7 @@ import MyButton from "../components/MyButton";
 
 
 import BallotIcon from '@mui/icons-material/Ballot';
+import ClaimWindow from "./ClaimWindow/ClaimWindow";
 
 
 const Main = () => {

@@ -7,6 +7,11 @@ const {db} = require("./firebase");
 const {handleEditProject} = require("./bot/editProjects");
 const {observeMessage} = require("./bot/observeMessages");
 const {editProjects} = require("./bot/EditProjects/Edit");
+const dayjs = require("dayjs");
+const relativeTime = require("dayjs/plugin/relativeTime");
+const {checkClaimStart} = require("./bot/Claim/CheckClaim");
+
+dayjs.extend(relativeTime);
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(token, {polling: true});
@@ -21,39 +26,9 @@ const removeNeed = async ({ project, user }) => {
     await updateDoc(userRef, { needClaim: newArray });
 }
 
+checkClaimStart(bot);  // Call function to start observe on projects claim
 
-const setupRealTimeListeners = (bot) => {
-    const q = query(collection(db, "users"));
 
-    const unsubscribe = onSnapshot(q, async (querySnapshot) => {
-        for (const userDoc of querySnapshot.docs) {
-            if (userDoc.exists()) {
-                const user = userDoc.data();
-                const needArr = user.claim_waiting;
-
-                if (needArr) {
-                    for (const need of needArr) {
-                        const projRef = doc(db, "projects", need.toString());
-                        const docSnap = await getDoc(projRef);
-
-                        if (docSnap.exists()) {
-                            const project = docSnap.data();
-                            await bot.sendPhoto(user.id, project.imgPath ,{caption: `Привет, пришло время забрать монети в ${project.name}`});
-                            await removeNeed({project, user})
-                        } else {
-                            // docSnap.data() will be undefined in this case
-                            console.log("No such document!");
-                        }
-                    }
-                }
-            }
-        }
-    });
-};
-
-setupRealTimeListeners(bot);
-
-// Handle callback queries
 bot.on('callback_query', callBackMsg => {
     const msg = callBackMsg.message;
     const chatId = msg.chat.id;

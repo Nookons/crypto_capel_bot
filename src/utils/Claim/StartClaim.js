@@ -20,7 +20,7 @@ const startClaim = async ({ currentItem, user }) => {
         endClaim: endClaim
     };
 
-    await updateDoc(userRef, { claim_waiting: arrayUnion(template) });
+    await updateDoc(userRef, { claim: arrayUnion(template) });
 }
 
 export default startClaim;

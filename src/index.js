@@ -10,15 +10,15 @@ import {store} from "./store/store";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-            <DevSupport ComponentPreviews={ComponentPreviews}
-                        useInitialHook={useInitial}
-            >
-                <Provider store={store}>
-                    <BrowserRouter>  {/* Wrap App with BrowserRouter */}
-                        <App />
-                    </BrowserRouter>
-                </Provider>
-            </DevSupport>
+        <DevSupport ComponentPreviews={ComponentPreviews}
+                    useInitialHook={useInitial}
+        >
+            <Provider store={store}>
+                <BrowserRouter>  {/* Wrap App with BrowserRouter */}
+                    <App/>
+                </BrowserRouter>
+            </Provider>
+        </DevSupport>
     </React.StrictMode>
 );
 

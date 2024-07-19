@@ -7,11 +7,11 @@ const removeClaim = async ({ id, user }) => {
     const timestamp = dayjs().valueOf();  // Current timestamp in milliseconds
 
     // Фильтруем элементы, чтобы оставить только те, которые не совпадают с указанным id
-    const updatedClaims = user.claim_waiting.filter(item => item.id !== id);
+    const updatedClaims = user.claim.filter(item => item.id !== id);
 
     // Обновляем документ пользователя в Firestore
     await updateDoc(userRef, {
-        claim_waiting: updatedClaims,
+        claim: updatedClaims,
         updateTime: timestamp
     });
 }

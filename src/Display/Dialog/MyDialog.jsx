@@ -24,6 +24,7 @@ import CommentInput from "./comments/CommentInput";
 import DialogComments from "./comments/DialogComments";
 import startClaim from "../../utils/Claim/StartClaim";
 import ProjectClaim from "./Claim/ProjectClaim";
+import ClaimWindow from "../ClaimWindow/ClaimWindow";
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -37,6 +38,8 @@ const MyDialog = ({dialog, setDialog}) => {
 
     const [isFavorite, setIsFavorite]   = useState(false);
     const [isLiked, setIsLiked]         = useState(false);
+
+    const [claimWindow, setClaimWindow] = useState(false);
 
 
     const [currentItem, setCurrentItem] = useState(null);
@@ -85,6 +88,7 @@ const MyDialog = ({dialog, setDialog}) => {
 
     const onStartClick = () => {
         onClose();
+        setClaimWindow(true)
         window.location.href = currentItem.link
     }
 
@@ -95,6 +99,7 @@ const MyDialog = ({dialog, setDialog}) => {
             onClose={onClose}
             TransitionComponent={Transition}
         >
+            <ClaimWindow open={claimWindow} setOpen={setClaimWindow} />
             <AppBar sx={{ position: 'relative', background: `url(${currentItem?.imgPath})`, backgroundSize: "cover"}}>
                 <Toolbar sx={{gap: 2, justifyContent: "space-between"}}>
                     <IconButton
