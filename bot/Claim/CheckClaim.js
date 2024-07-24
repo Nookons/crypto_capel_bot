@@ -19,20 +19,14 @@ const setupRealTimeListeners = (bot) => {
                         const endClaimDate = dayjs(end_claim);
 
                         if (endClaimDate.isBefore(timestamp)) {
-                            console.log("Время пришло");
-
                             const projRef = doc(db, "projects", need.id.toString());
                             const docSnap = await getDoc(projRef);
-
-                            // Construct the reference to the user document
                             const updateRef = doc(db, "users", "user_" + user.id);
 
-                            // Read the current data from Firestore
                             const userSnap = await getDoc(updateRef);
                             if (userSnap.exists()) {
                                 let userData = userSnap.data();
 
-                                // Check if the projects array exists
                                 if (Array.isArray(userData.claim)) {
 
                                     userData.projects = userData.claim.map(project => {
@@ -51,8 +45,6 @@ const setupRealTimeListeners = (bot) => {
                                                             ]
                                                         }
                                                     });
-                                                } else {
-                                                    console.log("No such document!");
                                                 }
                                                 return { ...project, isShowed: true };
                                             }
@@ -60,23 +52,11 @@ const setupRealTimeListeners = (bot) => {
                                         return project;
                                     });
 
-                                    // Update the document in Firestore
                                     await updateDoc(updateRef, {
                                         claim: userData.projects,
-                                        capital: true
                                     });
-
-                                    console.log("Project updated successfully!");
-                                } else {
-                                    console.error("No projects array found in the document");
                                 }
-                            } else {
-                                console.error("No such document!");
                             }
-
-                        } else {
-                            console.log("Время не пришло");
-                            // here need logic to send alert what claim time is soon
                         }
                     }
                 }
@@ -86,7 +66,6 @@ const setupRealTimeListeners = (bot) => {
 };
 
 const checkClaimStart = (bot) => {
-    // Проверяем каждые 60 секунд
     setInterval(() => {
         setupRealTimeListeners(bot);
     }, 60000);

@@ -26,7 +26,7 @@ const removeNeed = async ({ project, user }) => {
     await updateDoc(userRef, { needClaim: newArray });
 }
 
-checkClaimStart(bot);  // Call function to start observe on projects claim
+checkClaimStart(bot);
 
 
 bot.on('callback_query', callBackMsg => {
