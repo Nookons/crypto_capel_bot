@@ -2,11 +2,13 @@ import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { userReducer } from './reducers/userReducer';
 import { projectsReducer } from './reducers/projectsReducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk'; // Import `redux-thunk` correctly as default
+import thunk from 'redux-thunk';
+import {configReducer} from "./reducers/Main"; // Import `redux-thunk` correctly as default
 
 const rootReducer = combineReducers({
     user: userReducer,
-    projects: projectsReducer
+    projects: projectsReducer,
+    config: configReducer,
 });
 
 const middleware = [thunk]; // Define middleware correctly

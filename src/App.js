@@ -12,6 +12,7 @@ import {fetchUser} from "./store/reducers/asyncActions/user/getUser";
 import {fetchProjects} from "./store/reducers/asyncActions/user/getProjects";
 import AppRouter from "./components/AppRoute";
 import {BrowserRouter} from "react-router-dom";
+import {fetchMainData} from "./store/reducers/asyncActions/Main/MainAsync";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -42,6 +43,7 @@ const App = () => {
 
         dispatch(fetchUser(id))
         dispatch(fetchProjects())
+        dispatch(fetchMainData())
     }, [tg]);
 
     useEffect(() => {
