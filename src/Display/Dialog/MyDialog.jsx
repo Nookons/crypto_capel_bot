@@ -135,7 +135,9 @@ const MyDialog = ({dialog, setDialog, setClaimWindow}) => {
                 <Divider sx={{my: 1}}/>
                 <p>{currentItem?.description}</p>
                 <Divider sx={{my: 1}}/>
+
                 <CommentInput currentItem={currentItem}/>
+
                 <DialogComments currentItem={currentItem}/>
             </List>
         </Dialog>

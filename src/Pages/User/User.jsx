@@ -92,8 +92,10 @@ const User = () => {
                 :
                 <Skeleton sx={{mt: "14px"}} variant="rectangular" width={"100%"} height={260}/>
             }
-            <MyButton>Повідомити про помилку</MyButton>
-            <MyButton>Запропонувати проєкт</MyButton>
+            <Box sx={{display: "flex", gap: 1}}>
+                <MyButton>Повідомити про помилку</MyButton>
+                <MyButton>Запропонувати проєкт</MyButton>
+            </Box>
             <Box sx={{my: 2, display: "flex", alignItems: "center", justifyContent: "center"}}>
                 <p>Version: {config.version_number} (Beta Test)</p>
             </Box>

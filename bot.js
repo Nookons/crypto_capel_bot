@@ -26,8 +26,6 @@ const removeNeed = async ({ project, user }) => {
     await updateDoc(userRef, { needClaim: newArray });
 }
 
-checkClaimStart(bot);
-
 
 bot.on('callback_query', callBackMsg => {
     const msg = callBackMsg.message;

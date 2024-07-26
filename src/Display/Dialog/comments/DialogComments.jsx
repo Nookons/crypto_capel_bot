@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import MyButton from "../../../components/MyButton";
 import Comment from "./Comment";
+import {Box} from "@mui/material";
 
 
 
@@ -33,11 +34,11 @@ const DialogComments = ({ currentItem }) => {
     }
 
     return (
-        <div>
+        <Box sx={{display: "flex", flexDirection: "column", gap: 1, mb: 16}}>
             {comments.map((comment) => (
                 <Comment key={comment.comment_id} comment={comment} currentItem={currentItem} onCommentUpdate={handleCommentUpdate} />
             ))}
-        </div>
+        </Box>
     );
 };
 
